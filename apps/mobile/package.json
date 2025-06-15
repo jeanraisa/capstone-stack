@@ -1,0 +1,57 @@
+{
+  "name": "@capstone/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "clean": "git clean -xdf .cache .expo .turbo ios node_modules",
+    "dev": "expo run:ios",
+    "prebuild": "expo prebuild",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
+  },
+  "dependencies": {
+    "@better-auth/expo": "1.2.9",
+    "@expo/metro-config": "^0.20.14",
+    "@tanstack/react-query": "^5.80.7",
+    "@trpc/client": "^11.4.0",
+    "@trpc/server": "^11.4.0",
+    "@trpc/tanstack-react-query": "^11.4.0",
+    "better-auth": "1.2.9",
+    "expo": "53.0.11",
+    "expo-constants": "17.1.6",
+    "expo-dev-client": "~5.2.0",
+    "expo-linking": "7.1.5",
+    "expo-router": "~5.1.0",
+    "expo-secure-store": "14.2.3",
+    "expo-splash-screen": "~0.30.9",
+    "expo-status-bar": "2.2.3",
+    "expo-system-ui": "~5.0.7",
+    "expo-web-browser": "14.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.3",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "superjson": "2.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/runtime": "^7.27.4",
+    "@capstone/tsconfig": "workspace:*",
+    "@types/babel__core": "^7.20.5",
+    "@types/react": "~19.0.10",
+    "typescript": "^5.8.3"
+  }
+}
