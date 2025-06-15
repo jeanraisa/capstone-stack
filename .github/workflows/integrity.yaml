@@ -26,9 +26,9 @@ jobs:
           bun-version: latest
       - name: 🛠️ Install dependencies
         run: bun install
+      - name: 🎩 Run format
+        run: bun run format
       - name: 🔦 Run linter
         run: bun run lint
-      - name: 🎩Run format
-        run: bun run format
       - name: 🪐 Check TypeScript
         run: bun run typecheck
