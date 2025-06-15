@@ -1,0 +1,26 @@
+{
+  "name": "capstone",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "clean": "git clean -xdf node_modules",
+    "clean:workspaces": "turbo clean",
+    "dev": "turbo dev --parallel",
+    "dev:api": "turbo dev --filter=@capstone/api",
+    "dev:mobile": "turbo dev --filter=@captone/mobile",
+    "format": "biome format --write .",
+    "lint": "turbo lint && manypkg check",
+    "typecheck": "turbo typecheck"
+  },
+  "packageManager": "bun@1.2.15",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@manypkg/cli": "^0.24.0",
+    "turbo": "2.5.4",
+    "typescript": "^5.8.3"
+  }
+}
