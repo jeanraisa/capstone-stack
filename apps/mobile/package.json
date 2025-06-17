@@ -9,6 +9,7 @@
     "prebuild": "expo prebuild",
     "format": "biome format --write .",
     "lint": "biome check .",
+    "lint:fix": "biome check --fix --unsafe .",
     "typecheck": "tsc --noEmit"
   },
   "expo": {
@@ -19,13 +20,12 @@
     }
   },
   "dependencies": {
-    "@better-auth/expo": "1.2.9",
+    "@capstone/api": "workspace:*",
     "@expo/metro-config": "^0.20.14",
     "@tanstack/react-query": "^5.80.7",
     "@trpc/client": "^11.4.0",
     "@trpc/server": "^11.4.0",
     "@trpc/tanstack-react-query": "^11.4.0",
-    "better-auth": "1.2.9",
     "expo": "53.0.11",
     "expo-constants": "17.1.6",
     "expo-dev-client": "~5.2.0",
