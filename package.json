@@ -11,9 +11,10 @@
     "clean:workspaces": "turbo clean",
     "dev": "turbo dev --parallel",
     "dev:api": "turbo dev --filter=@capstone/api",
-    "dev:mobile": "turbo dev --filter=@captone/mobile",
-    "format": "biome format --write .",
+    "dev:mobile": "turbo dev --filter=@capstone/mobile",
+    "format": "turbo format",
     "lint": "turbo lint && manypkg check",
+    "lint:fix": "turbo lint && manypkg check",
     "typecheck": "turbo typecheck"
   },
   "packageManager": "bun@1.2.15",
