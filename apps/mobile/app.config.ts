@@ -19,10 +19,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   assetBundlePatterns: ["**/*"],
   ios: {
     bundleIdentifier: "com.mamacare.mobile",
-    supportsTablet: true,
-  },
-  android: {
-    package: "com.mamacare.mobile",
+    supportsTablet: false,
   },
   experiments: {
     tsconfigPaths: true,

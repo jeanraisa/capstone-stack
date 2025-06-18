@@ -3,16 +3,26 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
 import type { Database } from "./db";
+import { type Session, auth } from "./lib/auth";
 import { createTRPCContext } from "./trpc/init";
 import { appRouter } from "./trpc/routers/_app";
 
 const app = new OpenAPIHono<{
   Variables: {
     db: Database;
+    session: Session | null;
   };
 }>();
 
 app.use(secureHeaders());
+
+app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+
+app.use("*", async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+  c.set("session", session);
+  return next();
+});
 
 app.use(
   "/trpc/*",

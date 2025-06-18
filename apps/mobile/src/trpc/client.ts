@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import superjson from "superjson";
+import { authClient } from "~/auth/client";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,9 +25,11 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
       httpBatchLink({
         transformer: superjson,
         url: "http://localhost:3003/trpc",
-        headers() {
+        async headers() {
           const headers = new Map<string, string>();
+          const session = await authClient.getSession();
           headers.set("x-trpc-source", "expo-react-native");
+          headers.set("Authorization", `Bearer ${session.data?.session.token}`);
           return Object.fromEntries(headers);
         },
       }),
