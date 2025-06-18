@@ -1,10 +1,7 @@
 {
   "name": "capstone",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
+  "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
