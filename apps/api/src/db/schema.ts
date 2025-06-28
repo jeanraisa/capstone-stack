@@ -1,4 +1,6 @@
-import { index, pgPolicy, pgTable } from "drizzle-orm/pg-core";
+import { dataProvidersEnum, metricEnum, unitEnum } from "@capstone/utils/enum";
+import { relations } from "drizzle-orm";
+import { index, pgPolicy, pgTable, unique } from "drizzle-orm/pg-core";
 
 export const user = pgTable(
   "user",
@@ -34,6 +36,62 @@ export const user = pgTable(
     }),
   ],
 );
+
+export const userRelations = relations(user, ({ many }) => ({
+  dataProviderAccounts: many(dataProviderAccount),
+  metrics: many(metric),
+}));
+
+export const dataProviderAccount = pgTable(
+  "data_provider_account",
+  (t) => ({
+    id: t.text().primaryKey(),
+    provider: dataProvidersEnum().notNull(),
+    providerUserId: t.text().notNull(),
+    userId: t
+      .text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    accessToken: t.text(),
+    refreshToken: t.text(),
+    expiresAt: t.timestamp({ withTimezone: true, mode: "string" }),
+    isActive: t.boolean().notNull().default(true),
+  }),
+  (t) => [
+    unique().on(t.provider, t.providerUserId),
+    index().using("btree", t.userId.asc().op("text_ops")),
+  ],
+);
+
+export const dataProviderAccountRelations = relations(
+  dataProviderAccount,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [dataProviderAccount.userId],
+      references: [user.id],
+    }),
+  }),
+);
+
+export const metric = pgTable("metric", (t) => ({
+  id: t.text().primaryKey(),
+  userId: t
+    .text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  type: metricEnum().notNull(),
+  value: t.real().notNull(),
+  unit: unitEnum(),
+  date: t.date({ mode: "string" }).notNull(),
+  estimated: t.boolean().notNull(),
+}));
+
+export const metricRelations = relations(metric, ({ one }) => ({
+  user: one(user, {
+    fields: [metric.userId],
+    references: [user.id],
+  }),
+}));
 
 export const session = pgTable(
   "session",

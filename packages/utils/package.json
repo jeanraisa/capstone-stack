@@ -1,0 +1,23 @@
+{
+  "name": "@capstone/utils",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.44.2"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./enum": "./src/enum.ts",
+    "./format": "./src/format.ts"
+  }
+}
