@@ -1,7 +1,8 @@
 {
   "name": "@capstone/api",
   "scripts": {
-    "dev": "TZ=UTC PORT=3003 bun run --hot src/index.ts",
+    "dev": "TZ=UTC PORT=3000 bun run --hot src/index.ts",
+    "db:studio": "drizzle-kit studio",
     "db:pull": "drizzle-kit pull",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",

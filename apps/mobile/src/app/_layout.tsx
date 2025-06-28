@@ -1,31 +1,108 @@
+import * as AC from "@bacons/apple-colors";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { router } from "expo-router";
 import * as SP from "expo-splash-screen";
 import { useEffect } from "react";
-import { authClient } from "~/auth/client";
-import { queryClient } from "~/trpc/client";
+import { Pressable, StatusBar, useColorScheme } from "react-native";
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from "react-native-safe-area-context";
+import { Stack } from "~/components/Stack";
+import { Footnote, Subheadline } from "~/components/Title";
+import { WelcomeSheet } from "~/components/sheets/Welcome";
+import { useSession } from "~/hooks/user";
+import { queryClient } from "~/utils/trpc";
 
 SP.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const session = authClient.useSession();
+export const unstable_settings = {};
+
+function App() {
+  const session = useSession();
 
   useEffect(() => {
-    if (!session.isPending) {
-      SP.hideAsync();
-    }
+    if (session.isPending) return;
+    SP.hideAsync();
   }, [session.isPending]);
 
   return (
+    <Stack>
+      <Stack.Protected guard={!!session.data?.session}>
+        <Stack.Screen
+          name="(protected)"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!session.data?.session}>
+        <Stack.Screen
+          name="welcome"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="login"
+          options={{
+            title: "Log in",
+            headerLeft: () => (
+              <Pressable onPress={() => router.back()}>
+                <Footnote style={{ color: AC.link, fontSize: 16 }}>
+                  Cancel
+                </Footnote>
+              </Pressable>
+            ),
+            headerTitle: (props) => (
+              <Subheadline style={{ color: AC.label, fontSize: 17 }}>
+                {props.children}
+              </Subheadline>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{
+            title: "Sign Up",
+            headerLeft: () => (
+              <Pressable onPress={() => router.back()}>
+                <Footnote style={{ color: AC.link, fontSize: 16 }}>
+                  Cancel
+                </Footnote>
+              </Pressable>
+            ),
+            headerTitle: (props) => (
+              <Subheadline style={{ color: AC.label, fontSize: 17 }}>
+                {props.children}
+              </Subheadline>
+            ),
+          }}
+        />
+      </Stack.Protected>
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  return (
     <QueryClientProvider client={queryClient}>
-      <Stack screenOptions={{ contentStyle: { backgroundColor: "black" } }}>
-        <Stack.Protected guard={!session.data}>
-          <Stack.Screen options={{ title: "Login" }} name="index" />
-        </Stack.Protected>
-        <Stack.Protected guard={Boolean(session.data)}>
-          <Stack.Screen options={{ title: "Protected" }} name="protected" />
-        </Stack.Protected>
-      </Stack>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <StatusBar animated />
+          <App />
+          <WelcomeSheet />
+        </ThemeProvider>
+      </SafeAreaProvider>
     </QueryClientProvider>
   );
 }

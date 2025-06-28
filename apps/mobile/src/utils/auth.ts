@@ -1,12 +1,14 @@
 import { expoClient } from "@better-auth/expo/client";
 import { createAuthClient } from "better-auth/react";
+import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
+import { getBaseUrl } from "./lib";
 
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:3003",
+  baseURL: getBaseUrl(),
   plugins: [
     expoClient({
-      scheme: "mamacare",
+      scheme: Constants.expoConfig?.scheme as string,
       storagePrefix: "mamacare",
       storage: SecureStore,
     }),
