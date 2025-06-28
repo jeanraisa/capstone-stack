@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@better-auth/expo": "^1.2.9",
+    "@capstone/utils": "workspace:*",
     "@date-fns/utc": "^2.1.0",
     "@hono/trpc-server": "^0.3.4",
     "@hono/zod-openapi": "^0.19.8",
@@ -38,6 +39,7 @@
     "zod-openapi": "^4.2.4"
   },
   "devDependencies": {
+    "@capstone/tsconfig": "workspace:*",
     "@types/bun": "^1.2.16",
     "drizzle-kit": "^0.31.1"
   }

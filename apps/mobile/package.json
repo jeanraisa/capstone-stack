@@ -29,6 +29,7 @@
     "@bacons/apple-colors": "^0.0.8",
     "@better-auth/expo": "^1.2.9",
     "@capstone/api": "workspace:*",
+    "@capstone/utils": "workspace:*",
     "@expo-google-fonts/outfit": "^0.4.2",
     "@expo/metro-config": "^0.20.14",
     "@lodev09/react-native-true-sheet": "^2.0.5",

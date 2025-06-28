@@ -15,6 +15,13 @@
       "when": 1750206093481,
       "tag": "0001_polite_alice",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751138940140,
+      "tag": "0002_spicy_cyclops",
+      "breakpoints": true
     }
   ]
 }
