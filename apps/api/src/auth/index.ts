@@ -15,8 +15,19 @@ export const auth = betterAuth({
     enabled: true,
     // requireEmailVerification: true,
   },
-  socialProviders: {},
-  trustedOrigins: ["mamacare://*", "mamacare-dev://*", "mamacare-preview://"],
+  socialProviders: {
+    apple: {
+      clientId: process.env.APPLE_CLIENT_ID as string,
+      clientSecret: process.env.APPLE_CLIENT_SECRET as string,
+      appBundleIdentifier: process.env.MOBILE_BUNDLE_ID as string,
+    },
+  },
+  trustedOrigins: [
+    "mamacare://",
+    "mamacare-dev://",
+    "mamacare-preview://",
+    "https://appleid.apple.com",
+  ],
 });
 
 export type Auth = typeof auth;

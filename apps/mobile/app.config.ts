@@ -48,7 +48,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   platforms: ["ios"],
   orientation: "portrait",
   icon: "./assets/icon.png",
-  userInterfaceStyle: "dark",
+  userInterfaceStyle: "automatic",
   updates: {
     fallbackToCacheTimeout: 0,
     url: "https://u.expo.dev/24520563-a553-4869-81e3-ad66023fbf7e",
@@ -61,6 +61,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
+    usesAppleSignIn: true,
   },
   extra: {
     eas: {
@@ -75,11 +76,28 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     "expo-router",
     "expo-secure-store",
     "expo-web-browser",
+    "expo-apple-authentication",
     [
       "expo-splash-screen",
       {
         backgroundColor: "#E4E4E7",
         image: "./assets/splash-icon.png",
+      },
+    ],
+    [
+      "expo-font",
+      {
+        fonts: [
+          "../../node_modules/@expo-google-fonts/outfit/100Thin/Outfit_100Thin.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/200ExtraLight/Outfit_200ExtraLight.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/300Light/Outfit_300Light.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/400Regular/Outfit_400Regular.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/500Medium/Outfit_500Medium.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/600SemiBold/Outfit_600SemiBold.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/700Bold/Outfit_700Bold.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/800ExtraBold/Outfit_800ExtraBold.ttf",
+          "../../node_modules/@expo-google-fonts/outfit/900Black/Outfit_900Black.ttf",
+        ],
       },
     ],
   ],

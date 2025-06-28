@@ -2,8 +2,8 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import type { Context } from "hono";
 import superjson from "superjson";
 import { ZodError, z } from "zod/v4";
-import { type Database, db } from "../db";
-import type { Session } from "../lib/auth";
+import type { Session } from "../auth/";
+import type { Database } from "../db";
 
 type TRPCContext = {
   db: Database;
@@ -15,6 +15,7 @@ export const createTRPCContext = async (
   c: Context,
 ): Promise<TRPCContext> => {
   const session = c.get("session");
+  const db = c.get("db");
   return {
     db,
     session,

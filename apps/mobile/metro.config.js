@@ -5,6 +5,11 @@ const { FileStore } = require("metro-cache");
 const path = require("node:path");
 
 const config = withTurborepoManagedCache(getDefaultConfig(__dirname));
+config.transformer.getTransformOptions = async () => ({
+  transform: {
+    experimentalImportSupport: true,
+  },
+});
 module.exports = config;
 
 /**
