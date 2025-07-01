@@ -116,7 +116,7 @@ export const ADD_DATA: {
           "Beats per minute (BPM), indicating cardiovascular activity.",
         color: "#fff",
         background: AC.systemBlue,
-        route: "/menu/withings",
+        route: "/menu/heart-rate",
       },
       {
         id: "4",
@@ -126,7 +126,7 @@ export const ADD_DATA: {
           "Concentration of glucose in the blood, measured in mg/dL.",
         color: "#fff",
         background: AC.systemYellow,
-        route: "/menu/withings",
+        route: "/menu/blood-glucose",
       },
       {
         id: "5",
@@ -135,7 +135,7 @@ export const ADD_DATA: {
         description: "Top number in BP; pressure during heartbeats (mmHg).",
         color: "#fff",
         background: AC.systemIndigo,
-        route: "/menu/withings",
+        route: "/menu/systolic-bp",
       },
       {
         id: "6",
@@ -144,7 +144,7 @@ export const ADD_DATA: {
         description: "Bottom number in BP; pressure between beats (mmHg).",
         color: "#fff",
         background: AC.systemPurple,
-        route: "/menu/withings",
+        route: "/menu/diastolic-bp",
       },
       {
         id: "7",
@@ -153,7 +153,7 @@ export const ADD_DATA: {
         description: "Core body temperature, usually around 36.5–37.5°C.",
         color: "#fff",
         background: AC.systemOrange,
-        route: "/menu/withings",
+        route: "/menu/body-temperature",
       },
       {
         id: "8",
@@ -162,7 +162,7 @@ export const ADD_DATA: {
         description: "Body mass, commonly measured in kilograms (kg).",
         color: "#fff",
         background: AC.systemGreen,
-        route: "/menu/withings",
+        route: "/menu/weight",
       },
     ],
   },

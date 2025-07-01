@@ -83,6 +83,10 @@ export const metric = pgTable("metric", (t) => ({
   value: t.real().notNull(),
   unit: unitEnum(),
   date: t.date({ mode: "string" }).notNull(),
+  addedAt: t
+    .timestamp({ mode: "string", withTimezone: true })
+    .defaultNow()
+    .notNull(),
   estimated: t.boolean().notNull(),
 }));
 

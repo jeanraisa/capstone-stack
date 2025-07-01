@@ -22,6 +22,13 @@
       "when": 1751138940140,
       "tag": "0002_spicy_cyclops",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1751373999509,
+      "tag": "0003_outgoing_edwin_jarvis",
+      "breakpoints": true
     }
   ]
 }
