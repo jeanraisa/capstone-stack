@@ -54,7 +54,7 @@ export const dataProviderAccount = pgTable(
       .references(() => user.id, { onDelete: "cascade" }),
     accessToken: t.text(),
     refreshToken: t.text(),
-    expiresAt: t.timestamp({ withTimezone: true, mode: "string" }),
+    expiresAt: t.timestamp({ withTimezone: true, mode: "date" }),
     isActive: t.boolean().notNull().default(true),
   }),
   (t) => [

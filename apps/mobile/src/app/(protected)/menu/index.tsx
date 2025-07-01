@@ -1,45 +1,22 @@
 import * as AC from "@bacons/apple-colors";
+import type { LinkProps } from "expo-router";
 import React from "react";
 import { type OpaqueColorValue, StyleSheet, View } from "react-native";
-import {
-  type SharedValue,
-  useAnimatedScrollHandler,
-} from "react-native-reanimated";
 import { BodyScrollView } from "~/components/BodyScrollView";
 import * as Card from "~/components/Card";
-import { IconSymbol, type IconSymbolName } from "~/components/IconSymbol";
+import type { IconSymbolName } from "~/components/IconSymbol";
 import { Footnote, Headline } from "~/components/Title";
-import {
-  DUMMY_ITEM_HEIGHT,
-  HEADER_HEIGHT,
-  ICON_HEIGHT,
-  TOP_PADDING,
-} from "~/constants/AppConstants";
 
-export function MainMenu({ scrollY }: { scrollY: SharedValue<number> }) {
-  const handleScroll = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
-
+export default function MainMenu() {
   return (
     <BodyScrollView
-      onScroll={handleScroll}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.scrollViewContent}
     >
-      <IconSymbol
-        name="stethoscope"
-        size={1.2 * ICON_HEIGHT}
-        color={AC.label}
-        style={styles.icon}
-      />
-      <View style={styles.headerTitleSpace} />
       <View style={styles.container}>
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
-          {"Customize your app experience and manage \nyour preferences"}
+          {"Track your health with connected devices \n or manual input."}
         </Footnote>
         {ADD_DATA.map((card) => {
           const { title, options: cards } = card;
@@ -49,7 +26,7 @@ export function MainMenu({ scrollY }: { scrollY: SharedValue<number> }) {
               <Card.Section>
                 {cards.map((card, cardIndex) => (
                   <Card.Content key={card.id}>
-                    <Card.Item onPress={() => {}}>
+                    <Card.Item action="navigate" href={card.route}>
                       <Card.LeftIcon
                         style={{ backgroundColor: card.background }}
                         name={card.icon}
@@ -76,14 +53,9 @@ export function MainMenu({ scrollY }: { scrollY: SharedValue<number> }) {
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    paddingTop: HEADER_HEIGHT + TOP_PADDING,
+    paddingTop: 20,
     paddingHorizontal: 16,
     paddingBottom: 200,
-  },
-  headerTitleSpace: {
-    height: DUMMY_ITEM_HEIGHT,
-    alignSelf: "center",
-    width: "100%",
   },
   container: {
     gap: 25,
@@ -93,9 +65,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 13,
     opacity: 0.7,
-  },
-  icon: {
-    alignSelf: "center",
   },
 });
 
@@ -108,6 +77,7 @@ export const ADD_DATA: {
     description?: string;
     background?: OpaqueColorValue | `#${string}`;
     color?: OpaqueColorValue | `#${string}`;
+    route: LinkProps["href"];
   }[];
 }[] = [
   {
@@ -118,18 +88,20 @@ export const ADD_DATA: {
         icon: "watchface.applewatch.case",
         title: "Apple Health",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+          "Collects health data from Apple devices and connected apps.",
         color: "#fff",
         background: AC.systemRed,
+        route: "/menu/withings",
       },
       {
         id: "1",
         icon: "suit.heart.fill",
         title: "Withings",
         description:
-          "Lorem ipsum dolor sit amet,apple.logo consectetur adipiscing elit, sed do eiusmod",
+          "Smart health devices like scales, watches, and BP monitors.",
         color: "#fff",
         background: AC.opaqueSeparator,
+        route: "/menu/withings",
       },
     ],
   },
@@ -141,54 +113,56 @@ export const ADD_DATA: {
         icon: "heart.fill",
         title: "Heart Rate",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+          "Beats per minute (BPM), indicating cardiovascular activity.",
         color: "#fff",
         background: AC.systemBlue,
+        route: "/menu/withings",
       },
       {
         id: "4",
         icon: "flame.fill",
         title: "Blood Glucose",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+          "Concentration of glucose in the blood, measured in mg/dL.",
         color: "#fff",
         background: AC.systemYellow,
+        route: "/menu/withings",
       },
       {
         id: "5",
         icon: "waveform.path.ecg",
         title: "Systolic BP",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+        description: "Top number in BP; pressure during heartbeats (mmHg).",
         color: "#fff",
         background: AC.systemIndigo,
+        route: "/menu/withings",
       },
       {
         id: "6",
         icon: "waveform.path.ecg",
         title: "Diastolic BP",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+        description: "Bottom number in BP; pressure between beats (mmHg).",
         color: "#fff",
         background: AC.systemPurple,
+        route: "/menu/withings",
       },
       {
         id: "7",
         icon: "thermometer.variable",
         title: "Body Temperature",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+        description: "Core body temperature, usually around 36.5–37.5°C.",
         color: "#fff",
         background: AC.systemOrange,
+        route: "/menu/withings",
       },
       {
         id: "8",
         icon: "scalemass.fill",
         title: "Weight",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+        description: "Body mass, commonly measured in kilograms (kg).",
         color: "#fff",
         background: AC.systemGreen,
+        route: "/menu/withings",
       },
     ],
   },
