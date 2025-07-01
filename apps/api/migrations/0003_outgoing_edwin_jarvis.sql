@@ -1,0 +1,1 @@
+ALTER TABLE "metric" ADD COLUMN "added_at" timestamp with time zone DEFAULT now() NOT NULL;

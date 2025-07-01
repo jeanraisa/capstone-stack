@@ -15,6 +15,15 @@ export default function MenuLayout() {
     >
       <Stack.Screen name="index" options={{ title: "Data Source" }} />
       <Stack.Screen name="withings" options={{ title: "Withings" }} />
+      <Stack.Screen name="heart-rate" options={{ title: "Heart Rate" }} />
+      <Stack.Screen name="blood-glucose" options={{ title: "Blood Glucose" }} />
+      <Stack.Screen name="systolic-bp" options={{ title: "Systolic BP" }} />
+      <Stack.Screen name="diastolic-bp" options={{ title: "Diastolic BP" }} />
+      <Stack.Screen
+        name="body-temperature"
+        options={{ title: "Body Temperature" }}
+      />
+      <Stack.Screen name="weight" options={{ title: "Weight" }} />
     </Stack>
   );
 }

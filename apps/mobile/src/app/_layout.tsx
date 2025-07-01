@@ -9,6 +9,7 @@ import { router } from "expo-router";
 import * as SP from "expo-splash-screen";
 import { useEffect } from "react";
 import { Pressable, StatusBar, useColorScheme } from "react-native";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import {
   SafeAreaProvider,
   initialWindowMetrics,
@@ -95,13 +96,15 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <StatusBar animated />
-          <App />
-          <WelcomeSheet />
-        </ThemeProvider>
+        <KeyboardProvider statusBarTranslucent>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <StatusBar animated />
+            <App />
+            <WelcomeSheet />
+          </ThemeProvider>
+        </KeyboardProvider>
       </SafeAreaProvider>
     </QueryClientProvider>
   );
