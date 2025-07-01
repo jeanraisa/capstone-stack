@@ -4,11 +4,9 @@ import type React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { Link } from "expo-router";
 import { IconSymbol } from "./IconSymbol";
 import { Title } from "./Title";
-import { MENU_SHEET_NAME } from "./sheets/menu/screen";
 
 export interface StickyHeaderProps {
   title: string;
@@ -63,18 +61,15 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
             gap: 12,
           }}
         >
-          <TouchableOpacity
-            onPress={async () => {
-              await TrueSheet.present(MENU_SHEET_NAME);
-            }}
-            activeOpacity={0.7}
-          >
-            <IconSymbol
-              name="plus.circle.dashed"
-              size={28}
-              color={AC.systemBlue}
-            />
-          </TouchableOpacity>
+          <Link href="/menu" asChild>
+            <TouchableOpacity activeOpacity={0.7}>
+              <IconSymbol
+                name="plus.circle.dashed"
+                size={28}
+                color={AC.systemBlue}
+              />
+            </TouchableOpacity>
+          </Link>
 
           <Link href="/settings" asChild>
             <TouchableOpacity activeOpacity={0.7}>
