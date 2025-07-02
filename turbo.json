@@ -12,6 +12,9 @@
       "dependsOn": ["^build"],
       "outputs": [".expo/**", "dist/**", "build/**", "lib/**"]
     },
+    "prune": {
+      "include": ["patches"]
+    },
     "start": {
       "cache": false
     },
