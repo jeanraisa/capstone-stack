@@ -4,7 +4,9 @@ import { z } from "zod/v4";
 import { Withings } from "~api/auth/withings";
 import {
   addDataProvider,
+  getAppleHealthPermissions,
   getDataProvider,
+  syncAppleHealthPermissions,
 } from "~api/db/queries/data-provider";
 import { protectedProcedure } from "../init";
 
@@ -52,4 +54,27 @@ export const dataProviderRouter = {
         expiresAt: tokens.accessTokenExpiresAt(),
       });
     }),
+  syncAppleHealth: protectedProcedure
+    .input(
+      z.object({
+        heartRate: z.boolean().optional(),
+        bloodGlucose: z.boolean().optional(),
+        bodyTemperature: z.boolean().optional(),
+        diastolicBp: z.boolean().optional(),
+        systolicBp: z.boolean().optional(),
+        weight: z.boolean().optional(),
+        steps: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx: { db, session }, input }) => {
+      await syncAppleHealthPermissions(db, {
+        userId: session.user.id,
+        ...input,
+      });
+    }),
+  getAppleHealthPermissions: protectedProcedure.query(
+    async ({ ctx: { db, session } }) => {
+      return getAppleHealthPermissions(db, { userId: session.user.id });
+    },
+  ),
 } satisfies TRPCRouterRecord;

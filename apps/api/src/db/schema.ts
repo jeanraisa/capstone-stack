@@ -1,6 +1,12 @@
 import { dataProvidersEnum, metricEnum, unitEnum } from "@capstone/utils/enum";
 import { relations } from "drizzle-orm";
-import { index, pgPolicy, pgTable, unique } from "drizzle-orm/pg-core";
+import {
+  index,
+  pgPolicy,
+  pgTable,
+  primaryKey,
+  unique,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable(
   "user",
@@ -73,22 +79,49 @@ export const dataProviderAccountRelations = relations(
   }),
 );
 
-export const metric = pgTable("metric", (t) => ({
-  id: t.text().primaryKey(),
-  userId: t
-    .text()
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  type: metricEnum().notNull(),
-  value: t.real().notNull(),
-  unit: unitEnum(),
-  date: t.date({ mode: "string" }).notNull(),
-  addedAt: t
-    .timestamp({ mode: "string", withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  estimated: t.boolean().notNull(),
-}));
+export const appleHealthPermissions = pgTable(
+  "apple_health_permissions",
+  (t) => ({
+    userId: t
+      .text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    heartRate: t.boolean().default(false),
+    bloodGlucose: t.boolean().default(false),
+    bodyTemperature: t.boolean().default(false),
+    diastolicBp: t.boolean().default(false),
+    systolicBp: t.boolean().default(false),
+    weight: t.boolean().default(false),
+    steps: t.boolean().default(false),
+  }),
+  (t) => [
+    primaryKey({
+      columns: [t.userId],
+    }),
+  ],
+);
+
+export const metric = pgTable(
+  "metric",
+  (t) => ({
+    id: t.text().primaryKey(),
+    userId: t
+      .text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    type: metricEnum().notNull(),
+    value: t.real().notNull(),
+    unit: unitEnum(),
+    date: t.date({ mode: "string" }).notNull(),
+    addedAt: t
+      .timestamp({ mode: "string", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    estimated: t.boolean().notNull(),
+    providerId: t.text(),
+  }),
+  (t) => [unique().on(t.userId, t.providerId)],
+);
 
 export const metricRelations = relations(metric, ({ one }) => ({
   user: one(user, {

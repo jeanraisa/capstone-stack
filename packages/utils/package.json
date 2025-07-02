@@ -18,6 +18,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./enum": "./src/enum.ts",
-    "./date": "./src/date.ts"
+    "./date": "./src/date.ts",
+    "./format": "./src/format.ts"
   }
 }

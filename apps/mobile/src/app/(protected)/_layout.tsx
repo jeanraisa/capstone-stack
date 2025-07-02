@@ -1,7 +1,9 @@
 import { Stack } from "~/components/Stack";
 import { Outfit } from "~/constants/font";
+import { useSyncHealthData } from "~/hooks/apple";
 
 export default function ProtectedLayout() {
+  useSyncHealthData();
   return (
     <Stack
       screenOptions={{

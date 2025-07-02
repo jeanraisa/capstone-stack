@@ -110,7 +110,7 @@ export function LeftIcon({
   style,
 }: {
   name: IconSymbolName;
-  color?: OpaqueColorValue;
+  color?: OpaqueColorValue | `#${string}`;
   size?: number;
   style?: ViewStyle;
 }) {
