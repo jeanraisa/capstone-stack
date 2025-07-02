@@ -17,6 +17,9 @@ RUN turbo prune @capstone/api --docker
 FROM base AS installer
 WORKDIR /app
 
+# Copy patch files (as require to run packages)
+COPY patches ./patches
+
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
 # Don't copy the lockfile, allow Bun to generate a fresh one
