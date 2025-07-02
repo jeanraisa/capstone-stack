@@ -100,5 +100,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         ],
       },
     ],
+    [
+      "react-native-health",
+      {
+        isClinicalDataEnabled: true,
+        healthSharePermission: "Allow Mamacare to check health info",
+        healthUpdatePermission: "Allow Mamacare to update health info",
+        healthClinicalDescription: "Allow Mamacare to check health info",
+      },
+    ],
   ],
 });

@@ -20,5 +20,8 @@
     "@manypkg/cli": "^0.24.0",
     "turbo": "2.5.4",
     "typescript": "^5.8.3"
+  },
+  "patchedDependencies": {
+    "react-native-health@1.19.0": "patches/react-native-health@1.19.0.patch"
   }
 }

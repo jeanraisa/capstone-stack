@@ -12,6 +12,7 @@ export async function syncMetric(
     userId: string;
     estimated: boolean;
     date: string;
+    providerId?: string;
   },
 ) {
   await db.insert(metric).values({
@@ -22,5 +23,27 @@ export async function syncMetric(
     estimated: options.estimated,
     type: options.type,
     date: options.date,
+    providerId: options.providerId,
   });
+}
+
+export async function syncBatch(
+  db: Database,
+  options: {
+    data: {
+      id: string;
+      value: number;
+      type: Metric;
+      unit: Unit;
+      userId: string;
+      estimated: boolean;
+      date: string;
+      providerId?: string;
+    }[];
+  },
+) {
+  await db
+    .insert(metric)
+    .values(options.data)
+    .onConflictDoNothing({ target: [metric.userId, metric.providerId] });
 }

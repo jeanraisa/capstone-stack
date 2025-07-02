@@ -1,7 +1,13 @@
 import * as AC from "@bacons/apple-colors";
 import type { LinkProps } from "expo-router";
 import React from "react";
-import { type OpaqueColorValue, StyleSheet, View } from "react-native";
+import {
+  Image,
+  type ImageRequireSource,
+  type OpaqueColorValue,
+  StyleSheet,
+  View,
+} from "react-native";
 import { BodyScrollView } from "~/components/BodyScrollView";
 import * as Card from "~/components/Card";
 import type { IconSymbolName } from "~/components/IconSymbol";
@@ -27,11 +33,19 @@ export default function MainMenu() {
                 {cards.map((card, cardIndex) => (
                   <Card.Content key={card.id}>
                     <Card.Item action="navigate" href={card.route}>
-                      <Card.LeftIcon
-                        style={{ backgroundColor: card.background }}
-                        name={card.icon}
-                        color={card.color as any}
-                      />
+                      {card.image ? (
+                        <Image
+                          source={card.image}
+                          style={{ width: 25, height: 25, borderRadius: 5 }}
+                        />
+                      ) : (
+                        <Card.LeftIcon
+                          style={{ backgroundColor: card.background }}
+                          name={card.icon}
+                          color={card.color as any}
+                        />
+                      )}
+
                       <View style={{ flex: 1 }}>
                         <Card.Title>{card.title}</Card.Title>
                         <Card.Description>{card.description}</Card.Description>
@@ -75,6 +89,7 @@ export const ADD_DATA: {
     title: string;
     icon: IconSymbolName;
     description?: string;
+    image?: ImageRequireSource;
     background?: OpaqueColorValue | `#${string}`;
     color?: OpaqueColorValue | `#${string}`;
     route: LinkProps["href"];
@@ -85,13 +100,12 @@ export const ADD_DATA: {
     options: [
       {
         id: "0",
-        icon: "watchface.applewatch.case",
+        icon: "applelogo",
         title: "Apple Health",
         description:
           "Collects health data from Apple devices and connected apps.",
-        color: "#fff",
-        background: AC.systemRed,
-        route: "/menu/withings",
+        color: AC.label,
+        route: "/menu/apple",
       },
       {
         id: "1",
@@ -99,9 +113,9 @@ export const ADD_DATA: {
         title: "Withings",
         description:
           "Smart health devices like scales, watches, and BP monitors.",
-        color: "#fff",
-        background: AC.opaqueSeparator,
+        color: AC.label,
         route: "/menu/withings",
+        image: require("../../../../assets/logos/withings.jpg"),
       },
     ],
   },
