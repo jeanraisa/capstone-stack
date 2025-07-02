@@ -7,11 +7,13 @@ on:
     paths:
       - apps/api/**
       - packages/**
+      - patches/**
   push:
     branches: ["main"]
     paths:
       - apps/api/**
       - packages/**
+      - patches/**
 jobs:
   deploy:
     name: 🚀 Deploy to Fly Preview

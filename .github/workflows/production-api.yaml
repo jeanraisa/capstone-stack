@@ -8,6 +8,7 @@ on:
     paths:
       - apps/api/**
       - packages/**
+      - patches/**
 jobs:
   deploy:
     name: 🚀 Deploy to Fly Production
