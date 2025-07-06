@@ -5,6 +5,7 @@ import React from "react";
 import {
   ActivityIndicator,
   StyleSheet,
+  Switch,
   TextInput,
   TouchableOpacity,
   View,
@@ -13,12 +14,13 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import Animated from "react-native-reanimated";
 import * as Card from "~/components/Card";
 import { IconSymbol } from "~/components/IconSymbol";
-import { Footnote } from "~/components/Title";
+import { Caption, Footnote, Subheadline } from "~/components/Title";
 import { Outfit } from "~/constants/font";
 import { useAddMetricMutation } from "~/hooks/metric";
 
 export default function BloodGlucose() {
   const [value, setValue] = React.useState<string>("");
+  const [predict, setPredict] = React.useState<boolean>(true);
   const inputRef = React.useRef<TextInput | null>(null);
 
   const addMutation = useAddMetricMutation({
@@ -35,6 +37,7 @@ export default function BloodGlucose() {
   return (
     <KeyboardAwareScrollView
       ScrollViewComponent={Animated.ScrollView}
+      style={{ backgroundColor: AC.systemBackground }}
       contentContainerStyle={{
         paddingTop: 50,
         paddingHorizontal: 16,
@@ -42,18 +45,11 @@ export default function BloodGlucose() {
       }}
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
-        <View
-          style={{
-            width: 50,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: AC.systemOrange,
-            borderRadius: 8,
-          }}
-        >
-          <IconSymbol name="thermometer.variable" color="#fff" />
-        </View>
+        <IconSymbol
+          size={32}
+          name="waveform.path.ecg.rectangle"
+          color={AC.systemPink}
+        />
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
           {"Core body temperature,\nusually around 36.5–37.5°C."}
         </Footnote>
@@ -74,6 +70,29 @@ export default function BloodGlucose() {
               inputMode="decimal"
             />
           </Card.Content>
+          <Card.Separator marginStart={18} />
+          <Card.Content style={{ paddingLeft: 18, paddingVertical: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Subheadline>Run risk test</Subheadline>
+              <Switch
+                style={{ transform: [{ scale: 0.7 }] }}
+                disabled={loading}
+                value={predict}
+                onValueChange={setPredict}
+              />
+            </View>
+
+            <Caption style={{ color: AC.secondaryLabel }}>
+              Run a test based on your existing health data and your new body
+              temperature.
+            </Caption>
+          </Card.Content>
         </Card.Section>
 
         <TouchableOpacity
@@ -85,10 +104,15 @@ export default function BloodGlucose() {
             if (formattedValue < 21) return;
 
             addMutation.mutate({
-              type: metrics.BODY_TEMPERATURE,
-              value: formattedValue,
-              unit: units.CELSIUS,
               date: toIsoUtcDate(new Date()),
+              predict,
+              data: [
+                {
+                  type: metrics.BODY_TEMPERATURE,
+                  value: formattedValue,
+                  unit: units.CELSIUS,
+                },
+              ],
             });
           }}
         >

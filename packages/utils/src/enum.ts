@@ -46,3 +46,18 @@ export const units = {
   KG: "kg",
   CELSIUS: "celsius",
 } as const satisfies Record<string, Unit>;
+
+export const predictionClassValues = [0, 1, 2] as const;
+export type PredictionClass = (typeof predictionClassValues)[number];
+export const predictionLabelEnum = pgEnum("prediction_label_enum", [
+  "Moderate Risk",
+  "High Risk",
+  "Low Risk",
+]);
+export const predictionLabelValues = predictionLabelEnum.enumValues;
+export type PredictionLabel = (typeof predictionLabelValues)[number];
+export const predictionLabels = {
+  1: "Moderate Risk",
+  2: "High Risk",
+  0: "Low Risk",
+} as const satisfies Record<PredictionClass, PredictionLabel>;

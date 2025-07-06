@@ -77,6 +77,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     "expo-secure-store",
     "expo-web-browser",
     "expo-apple-authentication",
+    "@bacons/apple-colors",
     [
       "expo-splash-screen",
       {

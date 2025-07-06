@@ -39,11 +39,14 @@
     "@lodev09/react-native-true-sheet": "^2.0.5",
     "@react-native-community/datetimepicker": "8.4.1",
     "@react-native-masked-view/masked-view": "0.3.2",
+    "@shopify/react-native-skia": "^2.1.1",
     "@tanstack/react-query": "^5.80.7",
     "@trpc/client": "^11.4.0",
     "@trpc/server": "^11.4.0",
     "@trpc/tanstack-react-query": "^11.4.0",
     "better-auth": "^1.2.9",
+    "d3": "^7.9.0",
+    "date-fns": "^4.1.0",
     "expo": "53.0.15",
     "expo-apple-authentication": "~7.2.4",
     "expo-auth-session": "^6.2.0",
@@ -69,12 +72,14 @@
     "react-native-animated-splash-screen": "^2.0.5",
     "react-native-easing-gradient": "^1.1.1",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-graph": "^1.1.0",
     "react-native-health": "^1.19.0",
     "react-native-keyboard-controller": "^1.17.5",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
-    "superjson": "2.2.2"
+    "superjson": "2.2.2",
+    "victory-native": "^41.17.4"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
@@ -82,6 +87,7 @@
     "@babel/runtime": "^7.27.4",
     "@capstone/tsconfig": "workspace:*",
     "@types/babel__core": "^7.20.5",
+    "@types/d3": "^7.4.3",
     "@types/react": "~19.0.10",
     "typescript": "^5.8.3"
   }

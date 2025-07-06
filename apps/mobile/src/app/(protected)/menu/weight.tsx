@@ -36,6 +36,7 @@ export default function BloodGlucose() {
   return (
     <KeyboardAwareScrollView
       ScrollViewComponent={Animated.ScrollView}
+      style={{ backgroundColor: AC.systemBackground }}
       contentContainerStyle={{
         paddingTop: 50,
         paddingHorizontal: 16,
@@ -43,18 +44,11 @@ export default function BloodGlucose() {
       }}
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
-        <View
-          style={{
-            width: 50,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: AC.systemGreen,
-            borderRadius: 8,
-          }}
-        >
-          <IconSymbol name="scalemass.fill" color="#fff" />
-        </View>
+        <IconSymbol
+          size={32}
+          name="figure.mixed.cardio"
+          color={AC.systemPurple}
+        />
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
           {"Body mass, commonly measured \nin kilograms (kg)."}
         </Footnote>
@@ -85,12 +79,12 @@ export default function BloodGlucose() {
             const formattedValue = Number(Number.parseFloat(value).toFixed(1));
             if (formattedValue < 21) return;
 
-            addMutation.mutate({
-              type: metrics.WEIGHT,
-              value: formattedValue,
-              unit: units.KG,
-              date: toIsoUtcDate(new Date()),
-            });
+            // addMutation.mutate({
+            //   type: metrics.WEIGHT,
+            //   value: formattedValue,
+            //   unit: units.KG,
+            //   date: toIsoUtcDate(new Date()),
+            // });
           }}
         >
           {loading ? (

@@ -28,6 +28,13 @@ export const auth = betterAuth({
     "mamacare-preview://",
     "https://appleid.apple.com",
   ],
+  user: {
+    additionalFields: {
+      onboarded: {
+        type: "boolean",
+      },
+    },
+  },
 });
 
 export type Auth = typeof auth;

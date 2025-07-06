@@ -1,10 +1,24 @@
 import { toIsoUtcDate } from "@capstone/utils/date";
-import { metricValues, metrics, unitValues } from "@capstone/utils/enum";
+import {
+  type PredictionClass,
+  type PredictionLabel,
+  metricValues,
+  metrics,
+  unitValues,
+} from "@capstone/utils/enum";
+import { celsiusToFahrenheit } from "@capstone/utils/format";
 import { poundsToKg } from "@capstone/utils/format";
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 import { generateMetricId } from "~api/db/id";
-import { syncBatch, syncMetric } from "~api/db/queries/metric";
+import {
+  addMetrics,
+  canMakePrediction,
+  getDailyStats,
+  getPredictionMetrics,
+  syncBatch,
+} from "~api/db/queries/metric";
+import { addPrediction } from "~api/db/queries/prediction";
 import { protectedProcedure } from "../init";
 
 const singleMetric = z.object({
@@ -43,23 +57,85 @@ export const metricRouter = {
   add: protectedProcedure
     .input(
       z.object({
-        type: z.enum(metricValues),
-        value: z.number(),
-        unit: z.enum(unitValues),
         date: z.iso.date(),
-        providerId: z.string().optional(),
+        predict: z.boolean().default(true),
+        data: z.array(
+          z.object({
+            type: z.enum(metricValues),
+            value: z.number(),
+            unit: z.enum(unitValues),
+          }),
+        ),
       }),
     )
     .mutation(async ({ ctx: { db, session }, input }) => {
-      await syncMetric(db, {
-        type: input.type,
-        userId: session.user.id,
-        value: input.value,
-        unit: input.unit,
-        estimated: false,
-        date: input.date,
-        providerId: input.providerId,
+      await addMetrics(db, {
+        data: input.data.map((row) => ({
+          id: generateMetricId(),
+          estimated: false,
+          userId: session.user.id,
+          date: input.date,
+          ...row,
+        })),
       });
+
+      if (input.predict) {
+        const predictionsMetrics = await getPredictionMetrics(db, {
+          userId: session.user.id,
+        });
+
+        if (Object.entries(predictionsMetrics).length < 5) return;
+
+        const heartRate = predictionsMetrics[metrics.HEART_RATE]?.value ?? 0;
+        const bloodGlucose =
+          predictionsMetrics[metrics.BLOOD_GLUCOSE]?.value ?? 0;
+        const systolicBP = predictionsMetrics[metrics.SYSTOLIC_BP]?.value ?? 0;
+        const diastolicBP =
+          predictionsMetrics[metrics.DIASTOLIC_BP]?.value ?? 0;
+        const bodyTemp =
+          predictionsMetrics[metrics.BODY_TEMPERATURE]?.value ?? 0;
+        const tempToFahrenheit = celsiusToFahrenheit(bodyTemp);
+
+        const predictionRequest = await fetch(
+          `${process.env.HUGGING_FACE_SPACE}/predict`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              Age: 50, // after
+              SystolicBP: systolicBP,
+              DiastolicBP: diastolicBP,
+              BS: bloodGlucose,
+              BodyTemp: tempToFahrenheit,
+              HeartRate: heartRate,
+            }),
+          },
+        );
+
+        if (!predictionRequest.ok) {
+          return;
+        }
+
+        const prediction = (await predictionRequest.json()) as {
+          predicted_class: PredictionClass;
+          predicted_label: PredictionLabel;
+        };
+
+        await addPrediction(db, {
+          userId: session.user.id,
+          heartRate,
+          bloodGlucose,
+          systolicBloodPressure: systolicBP,
+          diastolicBloodPressure: diastolicBP,
+          date: input.date,
+          bodyTemperature: bodyTemp,
+          class: prediction.predicted_class,
+          label: prediction.predicted_label,
+        });
+        console.log("ALL GOD");
+      }
     }),
 
   addBatch: protectedProcedure
@@ -110,5 +186,28 @@ export const metricRouter = {
       if (!rows.length) return;
 
       await syncBatch(db, { data: rows });
+    }),
+  getDailyStats: protectedProcedure
+    .input(
+      z.object({
+        type: z.enum(metrics),
+        limit: z.number().min(7).default(7),
+      }),
+    )
+    .query(({ ctx: { db, session }, input }) => {
+      return getDailyStats(db, { userId: session.user.id, ...input });
+    }),
+
+  canPredict: protectedProcedure
+    .input(
+      z.object({
+        metrics: z.array(z.enum(metricValues)),
+      }),
+    )
+    .query(async ({ ctx: { db, session }, input }) => {
+      return canMakePrediction(db, {
+        userId: session.user.id,
+        metrics: input.metrics,
+      });
     }),
 } satisfies TRPCRouterRecord;
