@@ -1,0 +1,7 @@
+{
+  "name": "@capstone/fastapi",
+  "private": true,
+  "scripts": {
+    "dev": "python -m uvicorn main:app --reload"
+  }
+}
