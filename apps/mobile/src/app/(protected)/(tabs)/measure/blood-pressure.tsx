@@ -43,6 +43,7 @@ export default function BloodGlucose() {
         paddingHorizontal: 16,
         gap: 100,
       }}
+      showsVerticalScrollIndicator={false}
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
         <IconSymbol size={32} name="drop.fill" color={AC.systemPink} />

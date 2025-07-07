@@ -1,4 +1,5 @@
 import * as AC from "@bacons/apple-colors";
+import { toIsoUtcDate } from "@capstone/utils/date";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format, subYears } from "date-fns";
@@ -34,7 +35,7 @@ export default function OnboardingDob() {
     }),
   );
 
-  const loading = false;
+  const loading = updateMutation.isPending;
 
   return (
     <BodyScrollView
@@ -98,14 +99,9 @@ export default function OnboardingDob() {
             >
               <DateTimePicker
                 locale={"en-US"}
-                // minuteInterval={resolvedProps.minuteInterval}
                 mode="date"
                 display="inline"
                 maximumDate={yearsAgo}
-                // timeZoneOffsetInMinutes={resolvedProps.timeZoneOffsetInMinutes}
-                // textColor={resolvedProps.textColor}
-                // disabled={resolvedProps.disabled}
-                // accentColor={resolvedProps.accentColor}
                 value={date}
                 onChange={(_, value) => {
                   if (value) {
@@ -137,6 +133,10 @@ export default function OnboardingDob() {
             activeOpacity={0.8}
             onPress={() => {
               setShowDate(false);
+              updateMutation.mutate({
+                setOnboarded: true,
+                dob: toIsoUtcDate(date),
+              });
             }}
           >
             {loading ? (

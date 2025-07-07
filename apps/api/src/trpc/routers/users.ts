@@ -12,9 +12,14 @@ export const userRouter = {
     .input(
       z.object({
         dob: z.iso.date(),
+        setOnboarded: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx: { db, session }, input }) => {
-      await updateUser(db, { userId: session.user.id, dob: input.dob });
+      await updateUser(db, {
+        userId: session.user.id,
+        dob: input.dob,
+        onboarded: input.setOnboarded,
+      });
     }),
 } satisfies TRPCRouterRecord;

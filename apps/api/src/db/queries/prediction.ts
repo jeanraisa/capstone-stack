@@ -22,3 +22,33 @@ export async function addPrediction(
     ...options,
   });
 }
+
+export async function getLatestPrediction(
+  db: Database,
+  options: { userId: string },
+) {
+  return db.query.prediction
+    .findFirst({
+      where: (row, { eq }) => eq(row.userId, options.userId),
+      orderBy: (row, { desc }) => [desc(row.createdAt)],
+    })
+    .then((row) => row ?? null);
+}
+
+export async function getPreditions(
+  db: Database,
+  options: {
+    userId: string;
+    from: string;
+    to: string;
+  },
+) {
+  return db.query.prediction.findMany({
+    where: (row, { eq, and, between }) =>
+      and(
+        eq(row.userId, options.userId),
+        between(row.date, options.from, options.to),
+      ),
+    orderBy: (row, { desc }) => [desc(row.createdAt)],
+  });
+}

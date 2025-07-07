@@ -13,7 +13,7 @@ import * as Card from "~/components/Card";
 import type { IconSymbolName } from "~/components/IconSymbol";
 import { Footnote, Headline } from "~/components/Title";
 
-export default function MainMenu() {
+export default function Measure() {
   return (
     <BodyScrollView
       scrollEventThrottle={16}
@@ -105,7 +105,7 @@ export const ADD_DATA: {
         description:
           "Collects health data from Apple devices and connected apps.",
         color: AC.label,
-        route: "/menu/apple",
+        route: "/measure/apple",
       },
       {
         id: "1",
@@ -114,8 +114,8 @@ export const ADD_DATA: {
         description:
           "Smart health devices like scales, watches, and BP monitors.",
         color: AC.label,
-        route: "/menu/withings",
-        image: require("../../../../assets/logos/withings.jpg"),
+        route: "/measure/withings",
+        image: require("../../../../../assets/logos/withings.jpg"),
       },
     ],
   },
@@ -129,7 +129,7 @@ export const ADD_DATA: {
         description:
           "Beats per minute (BPM), indicating cardiovascular activity.",
         color: AC.systemPink,
-        route: "/menu/heart-rate",
+        route: "/measure/heart-rate",
       },
       {
         id: "4",
@@ -138,7 +138,7 @@ export const ADD_DATA: {
         description:
           "Concentration of glucose in the blood, measured in mg/dL.",
         color: AC.systemPink,
-        route: "/menu/blood-glucose",
+        route: "/measure/blood-glucose",
       },
       {
         id: "6",
@@ -146,7 +146,7 @@ export const ADD_DATA: {
         title: "Blood Pressure",
         description: "Bottom number in BP; pressure between beats (mmHg).",
         color: AC.systemPink,
-        route: "/menu/blood-pressure",
+        route: "/measure/blood-pressure",
       },
       {
         id: "7",
@@ -154,7 +154,7 @@ export const ADD_DATA: {
         title: "Body Temperature",
         description: "Core body temperature, usually around 36.5–37.5°C.",
         color: AC.systemPink,
-        route: "/menu/body-temperature",
+        route: "/measure/body-temperature",
       },
       /* {
         id: "8",

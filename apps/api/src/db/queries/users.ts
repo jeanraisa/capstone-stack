@@ -7,6 +7,7 @@ export async function getUserStatus(db: Database, options: { userId: string }) {
     .findFirst({
       columns: {
         onboarded: true,
+        dob: true,
       },
       where: (row, { eq }) => eq(row.id, options.userId),
     })
@@ -15,8 +16,18 @@ export async function getUserStatus(db: Database, options: { userId: string }) {
 
 export async function updateUser(
   db: Database,
-  options: { userId: string; dob: string },
+  options: { userId: string; dob: string; onboarded?: boolean },
 ) {
+  if (options.onboarded) {
+    await db
+      .update(user)
+      .set({
+        dob: options.dob,
+        onboarded: options.onboarded,
+      })
+      .where(eq(user.id, options.userId));
+    return;
+  }
   await db
     .update(user)
     .set({

@@ -18,7 +18,7 @@ import { Caption, Footnote, Subheadline } from "~/components/Title";
 import { Outfit } from "~/constants/font";
 import { useAddMetricMutation } from "~/hooks/metric";
 
-export default function BloodGlucose() {
+export default function HeartRate() {
   const [value, setValue] = React.useState<string>("");
   const [predict, setPredict] = React.useState<boolean>(true);
   const inputRef = React.useRef<TextInput | null>(null);
@@ -43,15 +43,12 @@ export default function BloodGlucose() {
         paddingHorizontal: 16,
         gap: 100,
       }}
+      showsVerticalScrollIndicator={false}
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
-        <IconSymbol
-          size={32}
-          name="waveform.path.ecg.rectangle"
-          color={AC.systemPink}
-        />
+        <IconSymbol name="waveform.path" size={32} color={AC.systemPink} />
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
-          {"Core body temperature,\nusually around 36.5–37.5°C."}
+          {"Beats per minute (BPM), indicating \n cardiovascular activity."}
         </Footnote>
       </View>
 
@@ -66,7 +63,7 @@ export default function BloodGlucose() {
               onChangeText={(value) => {
                 setValue(value.replace(",", "."));
               }}
-              placeholder="Body Temperature (celcius)"
+              placeholder="Heart Rate (bpm)"
               inputMode="decimal"
             />
           </Card.Content>
@@ -89,8 +86,8 @@ export default function BloodGlucose() {
             </View>
 
             <Caption style={{ color: AC.secondaryLabel }}>
-              Run a test based on your existing health data and your new body
-              temperature.
+              Run a test based on your existing health data and your new heart
+              rate.
             </Caption>
           </Card.Content>
         </Card.Section>
@@ -108,9 +105,9 @@ export default function BloodGlucose() {
               predict,
               data: [
                 {
-                  type: metrics.BODY_TEMPERATURE,
+                  type: metrics.HEART_RATE,
                   value: formattedValue,
-                  unit: units.CELSIUS,
+                  unit: units.BPM,
                 },
               ],
             });

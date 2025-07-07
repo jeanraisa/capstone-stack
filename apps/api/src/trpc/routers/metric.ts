@@ -9,6 +9,7 @@ import {
 import { celsiusToFahrenheit } from "@capstone/utils/format";
 import { poundsToKg } from "@capstone/utils/format";
 import type { TRPCRouterRecord } from "@trpc/server";
+import { differenceInYears } from "date-fns";
 import { z } from "zod/v4";
 import { generateMetricId } from "~api/db/id";
 import {
@@ -19,6 +20,7 @@ import {
   syncBatch,
 } from "~api/db/queries/metric";
 import { addPrediction } from "~api/db/queries/prediction";
+import { getUserStatus } from "~api/db/queries/users";
 import { protectedProcedure } from "../init";
 
 const singleMetric = z.object({
@@ -80,11 +82,19 @@ export const metricRouter = {
       });
 
       if (input.predict) {
-        const predictionsMetrics = await getPredictionMetrics(db, {
-          userId: session.user.id,
-        });
+        const [predictionsMetrics, userStatus] = await Promise.all([
+          getPredictionMetrics(db, {
+            userId: session.user.id,
+          }),
+          getUserStatus(db, { userId: session.user.id }),
+        ]);
 
-        if (Object.entries(predictionsMetrics).length < 5) return;
+        if (
+          Object.entries(predictionsMetrics).length < 5 ||
+          !userStatus?.onboarded ||
+          !userStatus?.dob
+        )
+          return;
 
         const heartRate = predictionsMetrics[metrics.HEART_RATE]?.value ?? 0;
         const bloodGlucose =
@@ -96,6 +106,9 @@ export const metricRouter = {
           predictionsMetrics[metrics.BODY_TEMPERATURE]?.value ?? 0;
         const tempToFahrenheit = celsiusToFahrenheit(bodyTemp);
 
+        // to be fixed
+        const yearsOld = differenceInYears(new Date(), userStatus.dob);
+
         const predictionRequest = await fetch(
           `${process.env.HUGGING_FACE_SPACE}/predict`,
           {
@@ -104,7 +117,7 @@ export const metricRouter = {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              Age: 50, // after
+              Age: yearsOld,
               SystolicBP: systolicBP,
               DiastolicBP: diastolicBP,
               BS: bloodGlucose,

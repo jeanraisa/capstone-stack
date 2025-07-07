@@ -43,15 +43,16 @@ export default function BloodGlucose() {
         paddingHorizontal: 16,
         gap: 100,
       }}
+      showsVerticalScrollIndicator={false}
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
         <IconSymbol
-          name="waveform.path.ecg.rectangle"
           size={32}
+          name="waveform.path.ecg.rectangle"
           color={AC.systemPink}
         />
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
-          {"Concentration of glucose in the blood,\nmeasured in mg/dL."}
+          {"Core body temperature,\nusually around 36.5–37.5°C."}
         </Footnote>
       </View>
 
@@ -66,7 +67,7 @@ export default function BloodGlucose() {
               onChangeText={(value) => {
                 setValue(value.replace(",", "."));
               }}
-              placeholder="Blood Glucose (mg/dL)"
+              placeholder="Body Temperature (celcius)"
               inputMode="decimal"
             />
           </Card.Content>
@@ -89,8 +90,8 @@ export default function BloodGlucose() {
             </View>
 
             <Caption style={{ color: AC.secondaryLabel }}>
-              Run a test based on your existing health data and your new blood
-              glucose level.
+              Run a test based on your existing health data and your new body
+              temperature.
             </Caption>
           </Card.Content>
         </Card.Section>
@@ -101,16 +102,16 @@ export default function BloodGlucose() {
           activeOpacity={0.8}
           onPress={() => {
             const formattedValue = Number(Number.parseFloat(value).toFixed(1));
-            if (formattedValue < 1) return;
+            if (formattedValue < 21) return;
 
             addMutation.mutate({
               date: toIsoUtcDate(new Date()),
               predict,
               data: [
                 {
-                  type: metrics.BLOOD_GLUCOSE,
+                  type: metrics.BODY_TEMPERATURE,
                   value: formattedValue,
-                  unit: units.MGDL,
+                  unit: units.CELSIUS,
                 },
               ],
             });

@@ -5,6 +5,7 @@ import React from "react";
 import {
   ActivityIndicator,
   StyleSheet,
+  Switch,
   TextInput,
   TouchableOpacity,
   View,
@@ -13,12 +14,13 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import Animated from "react-native-reanimated";
 import * as Card from "~/components/Card";
 import { IconSymbol } from "~/components/IconSymbol";
-import { Footnote } from "~/components/Title";
+import { Caption, Footnote, Subheadline } from "~/components/Title";
 import { Outfit } from "~/constants/font";
 import { useAddMetricMutation } from "~/hooks/metric";
 
 export default function BloodGlucose() {
   const [value, setValue] = React.useState<string>("");
+  const [predict, setPredict] = React.useState<boolean>(true);
   const inputRef = React.useRef<TextInput | null>(null);
 
   const addMutation = useAddMetricMutation({
@@ -32,7 +34,6 @@ export default function BloodGlucose() {
   });
 
   const loading = addMutation.isPending;
-
   return (
     <KeyboardAwareScrollView
       ScrollViewComponent={Animated.ScrollView}
@@ -42,15 +43,16 @@ export default function BloodGlucose() {
         paddingHorizontal: 16,
         gap: 100,
       }}
+      showsVerticalScrollIndicator={false}
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
         <IconSymbol
+          name="waveform.path.ecg.rectangle"
           size={32}
-          name="figure.mixed.cardio"
-          color={AC.systemPurple}
+          color={AC.systemPink}
         />
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
-          {"Body mass, commonly measured \nin kilograms (kg)."}
+          {"Concentration of glucose in the blood,\nmeasured in mg/dL."}
         </Footnote>
       </View>
 
@@ -65,9 +67,32 @@ export default function BloodGlucose() {
               onChangeText={(value) => {
                 setValue(value.replace(",", "."));
               }}
-              placeholder="Weight (kg)"
+              placeholder="Blood Glucose (mg/dL)"
               inputMode="decimal"
             />
+          </Card.Content>
+          <Card.Separator marginStart={18} />
+          <Card.Content style={{ paddingLeft: 18, paddingVertical: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Subheadline>Run risk test</Subheadline>
+              <Switch
+                style={{ transform: [{ scale: 0.7 }] }}
+                disabled={loading}
+                value={predict}
+                onValueChange={setPredict}
+              />
+            </View>
+
+            <Caption style={{ color: AC.secondaryLabel }}>
+              Run a test based on your existing health data and your new blood
+              glucose level.
+            </Caption>
           </Card.Content>
         </Card.Section>
 
@@ -77,14 +102,19 @@ export default function BloodGlucose() {
           activeOpacity={0.8}
           onPress={() => {
             const formattedValue = Number(Number.parseFloat(value).toFixed(1));
-            if (formattedValue < 21) return;
+            if (formattedValue < 1) return;
 
-            // addMutation.mutate({
-            //   type: metrics.WEIGHT,
-            //   value: formattedValue,
-            //   unit: units.KG,
-            //   date: toIsoUtcDate(new Date()),
-            // });
+            addMutation.mutate({
+              date: toIsoUtcDate(new Date()),
+              predict,
+              data: [
+                {
+                  type: metrics.BLOOD_GLUCOSE,
+                  value: formattedValue,
+                  unit: units.MGDL,
+                },
+              ],
+            });
           }}
         >
           {loading ? (

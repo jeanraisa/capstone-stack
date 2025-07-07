@@ -14,7 +14,7 @@ export function useAddMetricMutation({
         if (onSuccess) {
           onSuccess();
         }
-        queryClient.invalidateQueries(trpc.metric.getDailyStats.queryFilter());
+        queryClient.invalidateQueries();
       },
     }),
   );

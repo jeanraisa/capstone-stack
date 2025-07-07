@@ -47,7 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   version: "1.0.0",
   platforms: ["ios"],
   orientation: "portrait",
-  icon: "./assets/icon.png",
+  icon: "./assets/logo.png",
   userInterfaceStyle: "automatic",
   updates: {
     fallbackToCacheTimeout: 0,
@@ -81,8 +81,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-splash-screen",
       {
-        backgroundColor: "#E4E4E7",
-        image: "./assets/splash-icon.png",
+        image: "./assets/logo.png",
       },
     ],
     [
