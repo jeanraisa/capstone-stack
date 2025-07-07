@@ -1,5 +1,4 @@
 import * as AC from "@bacons/apple-colors";
-import { useTheme } from "@react-navigation/native";
 import { type Href, Link } from "expo-router";
 import {
   type OpaqueColorValue,
@@ -15,12 +14,8 @@ import { IconSymbol, type IconSymbolName } from "./IconSymbol";
 import { Footnote, Subheadline } from "./Title";
 
 export function Section({ style, children, ...props }: ViewProps) {
-  const theme = useTheme();
   return (
-    <View
-      {...props}
-      style={[styles.container, style, { backgroundColor: theme.colors.card }]}
-    >
+    <View {...props} style={[styles.container, style]}>
       {children}
     </View>
   );
@@ -51,7 +46,7 @@ export function Item({
   if (action === "press") {
     return (
       <TouchableHighlight
-        underlayColor={AC.systemGray6}
+        underlayColor={AC.opaqueSeparator}
         onPress={onPress}
         ref={ref}
       >
@@ -63,7 +58,7 @@ export function Item({
   if (!href) return null;
   return (
     <Link href={href} onPress={onPress} asChild>
-      <TouchableHighlight ref={ref} underlayColor={AC.systemGray6}>
+      <TouchableHighlight ref={ref} underlayColor={AC.opaqueSeparator}>
         <View style={[styles.item, style]}>{children}</View>
       </TouchableHighlight>
     </Link>
@@ -87,7 +82,7 @@ export function Separator({ marginStart = 54 }: { marginStart?: number }) {
 
 export function RightIcon({
   name,
-  color = AC.tertiaryLabel,
+  color = AC.secondaryLabel,
   size = 14,
   style,
 }: {
@@ -106,7 +101,7 @@ export function RightIcon({
 export function LeftIcon({
   name,
   color = AC.secondaryLabel,
-  size = 18,
+  size = 20,
   style,
 }: {
   name: IconSymbolName;
@@ -124,21 +119,20 @@ export function LeftIcon({
 const styles = StyleSheet.create({
   container: {
     borderCurve: "continuous",
-    borderRadius: 8,
-    // backgroundColor: AC.secondarySystemBackground,
+    borderRadius: 16,
+    backgroundColor: AC.secondarySystemBackground,
     overflow: "hidden",
   },
   item: {
-    paddingVertical: 8,
+    paddingVertical: 12,
     paddingHorizontal: 12,
     flexDirection: "row",
     alignItems: "center",
     gap: 16,
   },
   separator: {
-    borderBottomWidth: 0.5,
-    marginTop: -0.5,
-    borderBottomColor: AC.separator,
+    backgroundColor: AC.separator,
+    height: 0.5,
   },
   description: {
     fontSize: 12,

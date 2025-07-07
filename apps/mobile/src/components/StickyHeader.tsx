@@ -61,15 +61,13 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
             gap: 12,
           }}
         >
-          <Link href="/menu" asChild>
-            <TouchableOpacity activeOpacity={0.7}>
-              <IconSymbol
-                name="plus.circle.dashed"
-                size={28}
-                color={AC.systemBlue}
-              />
-            </TouchableOpacity>
-          </Link>
+          {/*  <TouchableOpacity activeOpacity={0.7}>
+            <IconSymbol
+              name="plus.circle.dashed"
+              size={28}
+              color={AC.systemBlue}
+            />
+          </TouchableOpacity> */}
 
           <Link href="/settings" asChild>
             <TouchableOpacity activeOpacity={0.7}>

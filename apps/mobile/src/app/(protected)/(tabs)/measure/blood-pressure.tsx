@@ -5,6 +5,7 @@ import React from "react";
 import {
   ActivityIndicator,
   StyleSheet,
+  Switch,
   TextInput,
   TouchableOpacity,
   View,
@@ -13,18 +14,19 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import Animated from "react-native-reanimated";
 import * as Card from "~/components/Card";
 import { IconSymbol } from "~/components/IconSymbol";
-import { Footnote } from "~/components/Title";
+import { Caption, Footnote, Subheadline } from "~/components/Title";
 import { Outfit } from "~/constants/font";
 import { useAddMetricMutation } from "~/hooks/metric";
 
 export default function BloodGlucose() {
-  const [value, setValue] = React.useState<string>("");
-  const inputRef = React.useRef<TextInput | null>(null);
+  const [diastolic, setDiastolic] = React.useState<string>("");
+  const [systolic, setSystolic] = React.useState<string>("");
+  const [predict, setPredict] = React.useState<boolean>(true);
 
   const addMutation = useAddMetricMutation({
     onSuccess: () => {
-      inputRef.current?.clear();
-      setValue("");
+      setDiastolic("");
+      setSystolic("");
       setTimeout(() => {
         addMutation.reset();
       }, 3000);
@@ -35,27 +37,18 @@ export default function BloodGlucose() {
   return (
     <KeyboardAwareScrollView
       ScrollViewComponent={Animated.ScrollView}
+      style={{ backgroundColor: AC.systemBackground }}
       contentContainerStyle={{
         paddingTop: 50,
         paddingHorizontal: 16,
         gap: 100,
       }}
+      showsVerticalScrollIndicator={false}
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
-        <View
-          style={{
-            width: 50,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: AC.systemIndigo,
-            borderRadius: 8,
-          }}
-        >
-          <IconSymbol name="waveform.path.ecg" color="#fff" />
-        </View>
+        <IconSymbol size={32} name="drop.fill" color={AC.systemPink} />
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
-          {"Top number in BP; pressure during\nheartbeats (mmHg)."}
+          {"Blood pressure\nbetween beats (mmHg)."}
         </Footnote>
       </View>
 
@@ -63,16 +56,51 @@ export default function BloodGlucose() {
         <Card.Section>
           <Card.Content>
             <TextInput
-              ref={inputRef}
               readOnly={loading}
               style={styles.input}
-              value={value}
+              value={diastolic}
               onChangeText={(value) => {
-                setValue(value.replace(",", "."));
+                setDiastolic(value.replace(",", "."));
               }}
-              placeholder="Systolic BP (mmHg)"
+              placeholder="Diastolic"
               inputMode="decimal"
             />
+          </Card.Content>
+          <Card.Separator marginStart={18} />
+          <Card.Content>
+            <TextInput
+              readOnly={loading}
+              style={styles.input}
+              value={systolic}
+              onChangeText={(value) => {
+                setSystolic(value.replace(",", "."));
+              }}
+              placeholder="Systolic"
+              inputMode="decimal"
+            />
+          </Card.Content>
+          <Card.Separator marginStart={18} />
+          <Card.Content style={{ paddingLeft: 18, paddingVertical: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Subheadline>Run risk test</Subheadline>
+              <Switch
+                style={{ transform: [{ scale: 0.7 }] }}
+                disabled={loading}
+                value={predict}
+                onValueChange={setPredict}
+              />
+            </View>
+
+            <Caption style={{ color: AC.secondaryLabel }}>
+              Run a test based on your existing health data and your new
+              diastolic/systolic blood pressure.
+            </Caption>
           </Card.Content>
         </Card.Section>
 
@@ -80,15 +108,30 @@ export default function BloodGlucose() {
           disabled={loading}
           style={styles.button}
           activeOpacity={0.8}
-          onPress={() => {
-            const formattedValue = Number(Number.parseFloat(value).toFixed(1));
-            if (formattedValue < 21) return;
+          onPress={async () => {
+            const diostolicValue = Number(
+              Number.parseFloat(diastolic).toFixed(1),
+            );
+            const systolicValue = Number(
+              Number.parseFloat(systolic).toFixed(1),
+            );
+            if (diostolicValue < 21 || systolicValue < 21) return;
 
             addMutation.mutate({
-              type: metrics.SYSTOLIC_BP,
-              value: formattedValue,
-              unit: units.MMHG,
               date: toIsoUtcDate(new Date()),
+              predict,
+              data: [
+                {
+                  type: metrics.SYSTOLIC_BP,
+                  value: systolicValue,
+                  unit: units.MMHG,
+                },
+                {
+                  type: metrics.DIASTOLIC_BP,
+                  value: diostolicValue,
+                  unit: units.MMHG,
+                },
+              ],
             });
           }}
         >

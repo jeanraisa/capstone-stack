@@ -1,4 +1,5 @@
 import * as AC from "@bacons/apple-colors";
+import type { LinkProps } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
@@ -42,7 +43,7 @@ export default function Settings() {
                   <Card.Item
                     action={card.action}
                     onPress={async () => {
-                      if (card.route === "logout") {
+                      if (card.signOut) {
                         signOutMutation.mutate();
                       }
                     }}
@@ -91,7 +92,6 @@ const styles = StyleSheet.create({
 });
 
 type Action = "navigate" | "press";
-type Route = "profile" | "notifications" | "appearance" | "logout";
 
 export const ADD_DATA: {
   id: string;
@@ -102,7 +102,8 @@ export const ADD_DATA: {
     background?: OpaqueColorValue | `#${string}`;
     color?: OpaqueColorValue | `#${string}`;
     action: Action;
-    route: Route;
+    route?: LinkProps["href"];
+    signOut?: boolean;
   }[];
 }[] = [
   {
@@ -115,33 +116,31 @@ export const ADD_DATA: {
         color: "#fff",
         background: AC.systemRed,
         action: "navigate",
-        route: "profile",
+        route: "/settings/profile",
       },
     ],
   },
-  {
-    id: "02",
-    options: [
-      {
-        id: "1",
-        icon: "bell.badge.fill",
-        title: "Notifications",
-        color: "#fff",
-        background: AC.systemBlue,
-        action: "navigate",
-        route: "notifications",
-      },
-      {
-        id: "2",
-        icon: "moonphase.last.quarter",
-        title: "Appearance",
-        color: "#fff",
-        background: AC.systemCyan,
-        action: "navigate",
-        route: "appearance",
-      },
-    ],
-  },
+  // {
+  //   id: "02",
+  //   options: [
+  //     {
+  //       id: "1",
+  //       icon: "bell.badge.fill",
+  //       title: "Notifications",
+  //       color: "#fff",
+  //       background: AC.systemBlue,
+  //       action: "navigate",
+  //     },
+  //     {
+  //       id: "2",
+  //       icon: "moonphase.last.quarter",
+  //       title: "Appearance",
+  //       color: "#fff",
+  //       background: AC.systemCyan,
+  //       action: "navigate",
+  //     },
+  //   ],
+  //},
   {
     id: "03",
     options: [
@@ -150,7 +149,7 @@ export const ADD_DATA: {
         icon: "door.left.hand.open",
         title: "Log Out",
         action: "press",
-        route: "logout",
+        signOut: true,
       },
     ],
   },

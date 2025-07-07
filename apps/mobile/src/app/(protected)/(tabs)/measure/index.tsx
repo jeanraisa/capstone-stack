@@ -13,7 +13,7 @@ import * as Card from "~/components/Card";
 import type { IconSymbolName } from "~/components/IconSymbol";
 import { Footnote, Headline } from "~/components/Title";
 
-export default function MainMenu() {
+export default function Measure() {
   return (
     <BodyScrollView
       scrollEventThrottle={16}
@@ -105,7 +105,7 @@ export const ADD_DATA: {
         description:
           "Collects health data from Apple devices and connected apps.",
         color: AC.label,
-        route: "/menu/apple",
+        route: "/measure/apple",
       },
       {
         id: "1",
@@ -114,8 +114,8 @@ export const ADD_DATA: {
         description:
           "Smart health devices like scales, watches, and BP monitors.",
         color: AC.label,
-        route: "/menu/withings",
-        image: require("../../../../assets/logos/withings.jpg"),
+        route: "/measure/withings",
+        image: require("../../../../../assets/logos/withings.jpg"),
       },
     ],
   },
@@ -124,60 +124,46 @@ export const ADD_DATA: {
     options: [
       {
         id: "3",
-        icon: "heart.fill",
+        icon: "waveform.path",
         title: "Heart Rate",
         description:
           "Beats per minute (BPM), indicating cardiovascular activity.",
-        color: "#fff",
-        background: AC.systemBlue,
-        route: "/menu/heart-rate",
+        color: AC.systemPink,
+        route: "/measure/heart-rate",
       },
       {
         id: "4",
-        icon: "flame.fill",
+        icon: "waveform.path.ecg.rectangle",
         title: "Blood Glucose",
         description:
           "Concentration of glucose in the blood, measured in mg/dL.",
-        color: "#fff",
-        background: AC.systemYellow,
-        route: "/menu/blood-glucose",
-      },
-      {
-        id: "5",
-        icon: "waveform.path.ecg",
-        title: "Systolic BP",
-        description: "Top number in BP; pressure during heartbeats (mmHg).",
-        color: "#fff",
-        background: AC.systemIndigo,
-        route: "/menu/systolic-bp",
+        color: AC.systemPink,
+        route: "/measure/blood-glucose",
       },
       {
         id: "6",
-        icon: "waveform.path.ecg",
-        title: "Diastolic BP",
+        icon: "drop.fill",
+        title: "Blood Pressure",
         description: "Bottom number in BP; pressure between beats (mmHg).",
-        color: "#fff",
-        background: AC.systemPurple,
-        route: "/menu/diastolic-bp",
+        color: AC.systemPink,
+        route: "/measure/blood-pressure",
       },
       {
         id: "7",
-        icon: "thermometer.variable",
+        icon: "waveform.path.ecg.rectangle",
         title: "Body Temperature",
         description: "Core body temperature, usually around 36.5–37.5°C.",
-        color: "#fff",
-        background: AC.systemOrange,
-        route: "/menu/body-temperature",
+        color: AC.systemPink,
+        route: "/measure/body-temperature",
       },
-      {
+      /* {
         id: "8",
-        icon: "scalemass.fill",
+        icon: "figure.mixed.cardio",
         title: "Weight",
         description: "Body mass, commonly measured in kilograms (kg).",
-        color: "#fff",
-        background: AC.systemGreen,
+        color: AC.systemPurple,
         route: "/menu/weight",
-      },
+      }, */
     ],
   },
 ];

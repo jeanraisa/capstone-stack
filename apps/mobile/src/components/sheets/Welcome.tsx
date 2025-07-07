@@ -32,20 +32,20 @@ export function WelcomeSheet() {
         <View style={styles.highlight}>
           <HighlightCard
             icon="stethoscope"
-            title="Accept Invitations"
-            description="Accept invitations to beta programmers and install the latest beta software."
+            title="Monitor Health Vitals"
+            description="Track key health metrics like blood pressure, glucose, and heart rate to stay on top of your pregnancy."
           />
 
           <HighlightCard
             icon="waveform.path.ecg"
-            title="Accept Invitations"
-            description="Accept invitations to beta programmers and install the latest beta software."
+            title="Predict Health Risks"
+            description="Use your logged vitals to generate personalized pregnancy risk tests and stay proactive."
           />
 
           <HighlightCard
             icon="bell"
-            title="Accept Invitations"
-            description="Accept invitations to beta programmers and install the latest beta software."
+            title="Stay Notified"
+            description="Receive timely alerts and reminders when new data insights or health warnings are available."
           />
         </View>
         <View style={styles.footer}>
@@ -69,20 +69,14 @@ export function WelcomeSheet() {
             />
           </View>
 
-          <Footnote style={[styles.highlightCardDesc, { textAlign: "center" }]}>
+          {/* <Footnote style={[styles.highlightCardDesc, { textAlign: "center" }]}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat
-          </Footnote>
+          </Footnote> */}
 
-          <Link href="https://example.com">
-            <Footnote style={{ color: AC.systemBlue, textAlign: "center" }}>
-              See how your data is managed...
-            </Footnote>
-          </Link>
-
-          <View style={{ paddingHorizontal: 50, marginTop: 20 }}>
+          <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
             <Link href="/login" asChild>
               <TouchableOpacity
                 onPress={async () => {

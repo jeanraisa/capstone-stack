@@ -1,4 +1,9 @@
-import { dataProvidersEnum, metricEnum, unitEnum } from "@capstone/utils/enum";
+import {
+  dataProvidersEnum,
+  metricEnum,
+  predictionLabelEnum,
+  unitEnum,
+} from "@capstone/utils/enum";
 import { relations } from "drizzle-orm";
 import {
   index,
@@ -27,6 +32,8 @@ export const user = pgTable(
       .timestamp()
       .$defaultFn(() => new Date())
       .notNull(),
+    onboarded: t.boolean().default(false).notNull(),
+    dob: t.date({ mode: "string" }),
   }),
   (table) => [
     index("user_email_idx").using("btree", table.email.asc().op("text_ops")),
@@ -46,6 +53,7 @@ export const user = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
   dataProviderAccounts: many(dataProviderAccount),
   metrics: many(metric),
+  predictions: many(prediction),
 }));
 
 export const dataProviderAccount = pgTable(
@@ -126,6 +134,34 @@ export const metric = pgTable(
 export const metricRelations = relations(metric, ({ one }) => ({
   user: one(user, {
     fields: [metric.userId],
+    references: [user.id],
+  }),
+}));
+
+export const prediction = pgTable("prediction", (t) => ({
+  id: t.text().primaryKey(),
+  userId: t
+    .text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  class: t.smallint().notNull(),
+  label: predictionLabelEnum().notNull(),
+  heartRate: t.real().notNull(),
+  bloodGlucose: t.real().notNull(),
+  bodyTemperature: t.real().notNull(),
+  systolicBloodPressure: t.real().notNull(),
+  diastolicBloodPressure: t.real().notNull(),
+  date: t.date({ mode: "string" }).notNull(),
+  valid: t.boolean(),
+  createdAt: t
+    .timestamp({ mode: "string", withTimezone: true })
+    .defaultNow()
+    .notNull(),
+}));
+
+export const predictionRelations = relations(prediction, ({ one }) => ({
+  user: one(user, {
+    fields: [prediction.userId],
     references: [user.id],
   }),
 }));

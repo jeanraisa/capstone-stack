@@ -43,6 +43,27 @@
       "when": 1751445416473,
       "tag": "0005_wealthy_screwball",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1751831724496,
+      "tag": "0006_whole_barracuda",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1751834206108,
+      "tag": "0007_omniscient_goliath",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1751838522896,
+      "tag": "0008_sparkling_omega_red",
+      "breakpoints": true
     }
   ]
 }

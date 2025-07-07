@@ -57,7 +57,7 @@ export default function () {
             }}
           >
             <Image
-              source={require("../../../../assets/logos/withings.jpg")}
+              source={require("../../../../../assets/logos/withings.jpg")}
               style={{ width: 35, height: 35, borderRadius: 5 }}
             />
           </View>

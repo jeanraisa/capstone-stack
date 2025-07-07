@@ -19,6 +19,7 @@
     ".": "./src/index.ts",
     "./enum": "./src/enum.ts",
     "./date": "./src/date.ts",
-    "./format": "./src/format.ts"
+    "./format": "./src/format.ts",
+    "./data": "./src/data.ts"
   }
 }

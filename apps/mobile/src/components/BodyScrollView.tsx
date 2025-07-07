@@ -1,3 +1,4 @@
+import * as AC from "@bacons/apple-colors";
 import type { ScrollViewProps } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -25,7 +26,7 @@ export function BodyScrollView(
         bottom: paddingBottom - bottom,
       }}
       {...props}
-      style={[props.style]}
+      style={[{ backgroundColor: AC.systemBackground }, props.style]}
     />
   );
 }

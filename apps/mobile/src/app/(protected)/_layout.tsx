@@ -4,6 +4,7 @@ import { useSyncHealthData } from "~/hooks/apple";
 
 export default function ProtectedLayout() {
   useSyncHealthData();
+
   return (
     <Stack
       screenOptions={{
@@ -20,15 +21,14 @@ export default function ProtectedLayout() {
         name="settings/index"
         options={{
           title: "Settings",
-          animation: "fade",
           headerBackTitle: "Back",
         }}
       />
       <Stack.Screen
-        name="menu"
+        name="settings/profile"
         options={{
-          presentation: "modal",
-          headerShown: false,
+          title: "Profile",
+          headerBackTitle: "Back",
         }}
       />
     </Stack>

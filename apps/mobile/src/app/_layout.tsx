@@ -4,11 +4,12 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import * as SP from "expo-splash-screen";
 import { useEffect } from "react";
 import { Pressable, StatusBar, useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import {
   SafeAreaProvider,
@@ -18,7 +19,7 @@ import { Stack } from "~/components/Stack";
 import { Footnote, Subheadline } from "~/components/Title";
 import { WelcomeSheet } from "~/components/sheets/Welcome";
 import { useSession } from "~/hooks/user";
-import { queryClient } from "~/utils/trpc";
+import { queryClient, trpc } from "~/utils/trpc";
 
 SP.preventAutoHideAsync();
 
@@ -26,24 +27,45 @@ export const unstable_settings = {};
 
 function App() {
   const session = useSession();
+  const userStatus = useQuery(
+    trpc.user.status.queryOptions(undefined, { retry: false }),
+  );
 
   useEffect(() => {
-    if (session.isPending) return;
+    if (session.isPending || userStatus.isPending) return;
     SP.hideAsync();
-  }, [session.isPending]);
+  }, [session.isPending, userStatus.isPending]);
 
   return (
     <Stack>
-      <Stack.Protected guard={!!session.data?.session}>
-        <Stack.Screen
-          name="(protected)"
-          options={{
-            headerShown: false,
-          }}
-        />
+      <Stack.Protected guard={session.data?.session !== undefined}>
+        <Stack.Protected
+          guard={
+            session.data?.session !== undefined && !!userStatus.data?.onboarded
+          }
+        >
+          <Stack.Screen
+            name="(protected)"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Protected>
+        <Stack.Protected
+          guard={
+            session.data?.session !== undefined && !userStatus.data?.onboarded
+          }
+        >
+          <Stack.Screen
+            name="onboarding"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Protected>
       </Stack.Protected>
 
-      <Stack.Protected guard={!session.data?.session}>
+      <Stack.Protected guard={session.data?.session === undefined}>
         <Stack.Screen
           name="welcome"
           options={{
@@ -96,15 +118,17 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <KeyboardProvider statusBarTranslucent>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <StatusBar animated />
-            <App />
-            <WelcomeSheet />
-          </ThemeProvider>
-        </KeyboardProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <KeyboardProvider statusBarTranslucent>
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <StatusBar animated />
+              <App />
+              <WelcomeSheet />
+            </ThemeProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
       </SafeAreaProvider>
     </QueryClientProvider>
   );
