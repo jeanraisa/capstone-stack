@@ -15,6 +15,7 @@ export default function TabsLayout() {
           fontFamily: Outfit.regular,
           fontSize: 11,
         },
+        animation: "fade",
       }}
     >
       <Tabs.Screen
@@ -25,7 +26,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="result"
         systemImage="stethoscope"
-        options={{ title: "Result", tabBarLabel: "Result" }}
+        options={{ title: "Results", tabBarLabel: "Results" }}
       />
       <Tabs.Screen
         name="measure"

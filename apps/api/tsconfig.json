@@ -14,7 +14,7 @@
     "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
-      "~api/*": ["./src/*"]
+      "~api/*": ["src/*"]
     },
     "types": ["bun-types"]
   },

@@ -7,6 +7,7 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 import { CartesianChart, Line } from "victory-native";
 import { trpc } from "~/utils/trpc";
 import { IconSymbol } from "../IconSymbol";
+import { PulseView } from "../PulseView";
 import { Footnote } from "../Title";
 
 export function HeartRateVital() {
@@ -16,7 +17,9 @@ export function HeartRateVital() {
     }),
   );
 
-  if (stats.isPending || stats.isError) return null;
+  if (stats.isPending || stats.isError) {
+    return <PulseView />;
+  }
 
   return (
     <Animated.View
@@ -56,17 +59,21 @@ export function HeartRateVital() {
           alignItems: "center",
         }}
       >
-        <View style={{ gap: 3 }}>
-          <Footnote>Latest</Footnote>
-          <View
-            style={{ flexDirection: "row", alignItems: "flex-end", gap: 2 }}
-          >
-            <Footnote weight="semiBold">{stats.data.latest?.value}</Footnote>
-            <Footnote weight="semiBold" style={{ color: AC.tertiaryLabel }}>
-              BPM
-            </Footnote>
+        {stats.data.latest ? (
+          <View style={{ gap: 3 }}>
+            <Footnote>Latest</Footnote>
+            <View
+              style={{ flexDirection: "row", alignItems: "flex-end", gap: 2 }}
+            >
+              <Footnote weight="semiBold">{stats.data.latest?.value}</Footnote>
+              <Footnote weight="semiBold" style={{ color: AC.tertiaryLabel }}>
+                BPM
+              </Footnote>
+            </View>
           </View>
-        </View>
+        ) : (
+          <Footnote>No Data</Footnote>
+        )}
 
         <View
           style={{

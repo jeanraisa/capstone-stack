@@ -39,6 +39,28 @@ const getScheme = () => {
   return "mamacare";
 };
 
+const getAppConfig = () => {
+  if (IS_DEV) {
+    return {
+      apiUrl: "https://mamacare-api-preview.fly.dev",
+      withingsClientId:
+        "db309d72266db335627275e3dc08cb6d26f9f9cf9e18ff83e439f25a139df80b",
+    };
+  }
+  if (IS_PREVIEW) {
+    return {
+      apiUrl: "https://mamacare-api-preview.fly.dev",
+      withingsClientId:
+        "db309d72266db335627275e3dc08cb6d26f9f9cf9e18ff83e439f25a139df80b",
+    };
+  }
+  return {
+    apiUrl: "https://mamacare-api.fly.dev",
+    withingsClientId:
+      "58d74854da60cd18d555404228ac119dffae58443acfeb7d1a4aeb56ac25d087",
+  };
+};
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: getAppName(),
@@ -60,6 +82,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: false,
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
+      UIViewControllerBasedStatusBarAppearance: true,
     },
     usesAppleSignIn: true,
   },
@@ -67,6 +90,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     eas: {
       projectId: "24520563-a553-4869-81e3-ad66023fbf7e",
     },
+    app: getAppConfig(),
   },
   experiments: {
     tsconfigPaths: true,
@@ -110,4 +134,5 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
   ],
+  jsEngine: "jsc",
 });

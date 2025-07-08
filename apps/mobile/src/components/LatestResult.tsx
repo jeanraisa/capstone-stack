@@ -3,21 +3,25 @@ import type { PredictionClass } from "@capstone/utils/enum";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "expo-router";
 import { type OpaqueColorValue, TouchableOpacity, View } from "react-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
+import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 import { trpc } from "~/utils/trpc";
 import { IconSymbol } from "./IconSymbol";
+import { PulseView } from "./PulseView";
 import { Caption, Footnote, Headline } from "./Title";
 
 export function LatestMeasurement() {
   const prediction = useQuery(trpc.prediction.latest.queryOptions());
 
-  if (prediction.isPending || prediction.isError) return null;
+  if (prediction.isPending || prediction.isError) {
+    return <PulseView height={150} />;
+  }
 
   if (!prediction.data) {
     return (
       <>
         <Animated.View
           layout={LinearTransition.springify().damping(16)}
+          entering={FadeIn.springify().damping(16)}
           style={{
             backgroundColor: AC.secondarySystemBackground,
             borderCurve: "continuous",
@@ -87,6 +91,7 @@ export function LatestMeasurement() {
     <>
       <Animated.View
         layout={LinearTransition.springify().damping(16)}
+        entering={FadeIn.springify().damping(16)}
         style={{
           borderCurve: "continuous",
           borderRadius: 16,
@@ -240,44 +245,49 @@ export function LatestMeasurement() {
         </View>
       </Animated.View>
 
-      <Link href="/result" asChild>
-        <TouchableOpacity activeOpacity={0.8}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: 12,
-              borderRadius: 24,
-              backgroundColor: AC.secondarySystemBackground,
-            }}
-          >
+      <Animated.View
+        layout={LinearTransition.springify().damping(16)}
+        entering={FadeIn.springify().damping(16)}
+      >
+        <Link href="/result" asChild>
+          <TouchableOpacity activeOpacity={0.8}>
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                gap: 6,
+                padding: 12,
+                borderRadius: 24,
+                backgroundColor: AC.secondarySystemBackground,
               }}
             >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 6,
+                }}
+              >
+                <IconSymbol
+                  weight="semibold"
+                  name="stethoscope"
+                  color={AC.systemBlue}
+                  size={24}
+                />
+                <Footnote style={{ fontSize: 14 }}>
+                  Show All Health Results
+                </Footnote>
+              </View>
               <IconSymbol
-                weight="semibold"
-                name="stethoscope"
-                color={AC.systemBlue}
-                size={24}
+                name="chevron.right"
+                color={AC.opaqueSeparator}
+                size={18}
               />
-              <Footnote style={{ fontSize: 14 }}>
-                Show All Health Results
-              </Footnote>
             </View>
-            <IconSymbol
-              name="chevron.right"
-              color={AC.opaqueSeparator}
-              size={18}
-            />
-          </View>
-        </TouchableOpacity>
-      </Link>
+          </TouchableOpacity>
+        </Link>
+      </Animated.View>
     </>
   );
 }

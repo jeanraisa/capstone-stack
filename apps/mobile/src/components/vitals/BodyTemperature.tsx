@@ -4,10 +4,11 @@ import { metrics } from "@capstone/utils/enum";
 import { useTheme } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { View } from "react-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
+import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 import { CartesianChart, Line } from "victory-native";
 import { trpc } from "~/utils/trpc";
 import { IconSymbol } from "../IconSymbol";
+import { PulseView } from "../PulseView";
 import { Footnote } from "../Title";
 
 export function BoodyTemperatureVital() {
@@ -18,7 +19,9 @@ export function BoodyTemperatureVital() {
     }),
   );
 
-  if (stats.isPending || stats.isError) return null;
+  if (stats.isPending || stats.isError) {
+    return <PulseView />;
+  }
 
   return (
     <Animated.View
@@ -28,7 +31,8 @@ export function BoodyTemperatureVital() {
         borderRadius: 18,
         padding: 12,
       }}
-      layout={LinearTransition.damping(8)}
+      layout={LinearTransition.springify().damping(16)}
+      entering={FadeIn.springify().damping(16)}
     >
       <View
         style={{

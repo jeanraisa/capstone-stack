@@ -3,8 +3,8 @@ import { QueryClient } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import superjson from "superjson";
-import Config from "~/config";
 import { authClient } from "./auth";
+import { getBaseUrl } from "./lib";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +25,7 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
       }),
       httpBatchLink({
         transformer: superjson,
-        url: `${Config.apiUrl}/trpc`,
+        url: `${getBaseUrl()}/trpc`,
         async headers() {
           const headers = new Map<string, string>();
           const session = await authClient.getSession();

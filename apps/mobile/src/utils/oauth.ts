@@ -5,11 +5,12 @@ import React from "react";
 import Config from "~/config";
 import { generateURI } from "./lib";
 import { trpc } from "./trpc";
+import Constants from "expo-constants";
 
 export function useWithingsAuth(path: string) {
   const [, , promptAsync] = useAuthRequest(
     {
-      clientId: Config.withingsClientId,
+      clientId: Constants.expoConfig?.extra?.app?.withingsClientId as string,
       scopes: ["user.activity,user.metrics,user.sleepevents,user.info"],
       redirectUri: generateURI(path),
       responseType: "code",

@@ -2,9 +2,10 @@ import * as AC from "@bacons/apple-colors";
 import { metrics } from "@capstone/utils/enum";
 import { useQuery } from "@tanstack/react-query";
 import { View } from "react-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
+import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 import { trpc } from "~/utils/trpc";
 import { IconSymbol } from "../IconSymbol";
+import { PulseView } from "../PulseView";
 import { Footnote } from "../Title";
 
 export function BloodPressureVital() {
@@ -25,8 +26,9 @@ export function BloodPressureVital() {
     diastolicstats.isError ||
     systolicStats.isPending ||
     systolicStats.isError
-  )
-    return null;
+  ) {
+    return <PulseView />;
+  }
 
   return (
     <Animated.View
@@ -36,7 +38,8 @@ export function BloodPressureVital() {
         borderRadius: 18,
         padding: 12,
       }}
-      layout={LinearTransition.damping(8)}
+      layout={LinearTransition.springify().damping(16)}
+      entering={FadeIn.springify().damping(16)}
     >
       <View
         style={{

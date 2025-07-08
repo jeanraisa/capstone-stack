@@ -19,7 +19,6 @@ export default function MenuLayout() {
         name="body-temperature"
         options={{ title: "Body Temperature" }}
       />
-      <Stack.Screen name="weight" options={{ title: "Weight" }} />
       <Stack.Screen name="apple" options={{ title: "Apple Health" }} />
     </Stack>
   );

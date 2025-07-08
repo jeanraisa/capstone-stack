@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import { BodyScrollView } from "~/components/BodyScrollView";
 import * as Card from "~/components/Card";
-import type { IconSymbolName } from "~/components/IconSymbol";
+import { FadeInView } from "~/components/FadeInView";
+import { IconSymbol, type IconSymbolName } from "~/components/IconSymbol";
 import { Footnote, Headline } from "~/components/Title";
 
 export default function Measure() {
@@ -20,7 +21,14 @@ export default function Measure() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.scrollViewContent}
     >
-      <View style={styles.container}>
+      <FadeInView style={styles.container}>
+        <View style={{ marginHorizontal: "auto" }}>
+          <IconSymbol
+            name="waveform.path.ecg.rectangle.fill"
+            size={32}
+            color={AC.systemBlue}
+          />
+        </View>
         <Footnote style={[styles.subtitle, { color: AC.label }]}>
           {"Track your health with connected devices \n or manual input."}
         </Footnote>
@@ -60,7 +68,7 @@ export default function Measure() {
             </View>
           );
         })}
-      </View>
+      </FadeInView>
     </BodyScrollView>
   );
 }

@@ -7,3 +7,14 @@ export function generateURI(path: string) {
     path,
   });
 }
+
+export const getBaseUrl = () => {
+  const debuggerHost = Constants.expoConfig?.hostUri;
+  const apiUrl = Constants.expoConfig?.extra?.app?.apiUrl as string;
+  const localhost = debuggerHost?.split(":")[0];
+
+  if (!localhost) {
+    return apiUrl;
+  }
+  return `http://${localhost}:3000`;
+};

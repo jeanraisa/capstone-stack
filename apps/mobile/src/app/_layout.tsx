@@ -8,7 +8,7 @@ import { QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import * as SP from "expo-splash-screen";
 import { useEffect } from "react";
-import { Pressable, StatusBar, useColorScheme } from "react-native";
+import { Pressable, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import {
@@ -32,40 +32,13 @@ function App() {
   );
 
   useEffect(() => {
-    if (session.isPending || userStatus.isPending) return;
+    if (userStatus.isPending) return;
     SP.hideAsync();
-  }, [session.isPending, userStatus.isPending]);
+  }, [userStatus.isPending]);
 
   return (
     <Stack>
-      <Stack.Protected guard={session.data?.session !== undefined}>
-        <Stack.Protected
-          guard={
-            session.data?.session !== undefined && !!userStatus.data?.onboarded
-          }
-        >
-          <Stack.Screen
-            name="(protected)"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Protected>
-        <Stack.Protected
-          guard={
-            session.data?.session !== undefined && !userStatus.data?.onboarded
-          }
-        >
-          <Stack.Screen
-            name="onboarding"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Protected>
-      </Stack.Protected>
-
-      <Stack.Protected guard={session.data?.session === undefined}>
+      <Stack.Protected guard={!userStatus.data}>
         <Stack.Screen
           name="welcome"
           options={{
@@ -109,6 +82,22 @@ function App() {
           }}
         />
       </Stack.Protected>
+      <Stack.Protected guard={userStatus.data?.onboarded ?? false}>
+        <Stack.Screen
+          name="(protected)"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Protected>
+      <Stack.Protected guard={!(userStatus.data?.onboarded ?? true)}>
+        <Stack.Screen
+          name="onboarding"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Protected>
     </Stack>
   );
 }
@@ -123,7 +112,6 @@ export default function RootLayout() {
             <ThemeProvider
               value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
             >
-              <StatusBar animated />
               <App />
               <WelcomeSheet />
             </ThemeProvider>

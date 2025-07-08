@@ -16,7 +16,7 @@ export default function () {
   );
 
   useWarmupBrowser();
-  const { handleWithingsAuth, isPending } = useWithingsAuth("menu/withings");
+  const { handleWithingsAuth, isPending } = useWithingsAuth("measure/withings");
 
   if (providerQuery.isPending) {
     return (

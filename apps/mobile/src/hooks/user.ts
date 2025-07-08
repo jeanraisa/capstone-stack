@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "~/utils/auth";
+import { trpc } from "~/utils/trpc";
 
 export const sessionQueryKey = ["getSessionUserQuery"];
 export const signInMutationKey = ["userLoginMutationKey"];
@@ -27,6 +28,9 @@ export function useSignInMutation() {
   const mutation = useMutation({
     mutationKey: signInMutationKey,
     onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: trpc.user.status.queryKey(),
+      });
       await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
     },
     mutationFn: async ({
@@ -56,6 +60,9 @@ export function useSignUpMutation() {
   const mutation = useMutation({
     mutationKey: signUpMutationKey,
     onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: trpc.user.status.queryKey(),
+      });
       await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
     },
     mutationFn: async ({
@@ -88,6 +95,9 @@ export function useSignInWithAppleMutation() {
   const mutation = useMutation({
     mutationKey: signInWithAppleMutationKey,
     onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: trpc.user.status.queryKey(),
+      });
       await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
     },
     mutationFn: async ({
@@ -110,6 +120,7 @@ export function useSignInWithAppleMutation() {
       });
 
       if (error) {
+        console.log(JSON.stringify(error, undefined, "\t"));
         throw new Error(error.message);
       }
 
@@ -130,7 +141,12 @@ export function useSignOutMutation() {
   const mutation = useMutation({
     mutationKey: signOutMutationKey,
     onSuccess: async () => {
+      queryClient.setQueriesData(
+        { queryKey: trpc.user.status.queryKey() },
+        null,
+      );
       await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
+      queryClient.clear();
       queryClient.invalidateQueries();
     },
     mutationFn: async () => {

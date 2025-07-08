@@ -4,10 +4,15 @@ import type { PredictionClass } from "@capstone/utils/enum";
 import { useQuery } from "@tanstack/react-query";
 import { format, subDays } from "date-fns";
 import { type OpaqueColorValue, View } from "react-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
 import { trpc } from "~/utils/trpc";
 import { IconSymbol } from "./IconSymbol";
-import { Footnote } from "./Title";
+import { PulseView } from "./PulseView";
+import { Footnote, Headline } from "./Title";
 
 export function PastResults() {
   const today = new Date();
@@ -21,11 +26,51 @@ export function PastResults() {
     }),
   );
 
-  if (results.isPending || results.isError) return null;
+  if (results.isPending || results.isError) {
+    return (
+      <Animated.View
+        layout={LinearTransition.springify().damping(16)}
+        exiting={FadeOut.springify().damping(16)}
+        style={{ gap: 18 }}
+      >
+        <PulseView height={140} />
+      </Animated.View>
+    );
+  }
+
+  if (!results.data.length) {
+    return (
+      <Animated.View
+        layout={LinearTransition.springify().damping(16)}
+        entering={FadeIn.springify().damping(16)}
+        style={{
+          backgroundColor: AC.secondarySystemBackground,
+          borderCurve: "continuous",
+          borderRadius: 16,
+          overflow: "hidden",
+          gap: 2,
+          height: 200,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <IconSymbol name="externaldrive.fill" color={AC.systemBlue} size={34} />
+
+        <Headline style={{ fontSize: 15 }}>Past Seven Days Results</Headline>
+        <Footnote
+          style={{ color: AC.secondaryLabel, textAlign: "center", width: 250 }}
+        >
+          No past results yet because there’s no recent vital data. Log your
+          health metrics to enable predictions.
+        </Footnote>
+      </Animated.View>
+    );
+  }
 
   return (
     <Animated.View
       layout={LinearTransition.springify().damping(16)}
+      entering={FadeIn.springify().damping(16)}
       style={{ gap: 18 }}
     >
       {results.data.map((result) => (
