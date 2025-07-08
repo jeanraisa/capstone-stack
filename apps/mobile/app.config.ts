@@ -51,7 +51,7 @@ const getAppConfig = () => {
     return {
       apiUrl: "https://mamacare-api-preview.fly.dev",
       withingsClientId:
-        "db309d72266db335627275e3dc08cb6d26f9f9cf9e18ff83e439f25a139df80b",
+        "1aff2bdb000773a37a446a75be5a47764268641f7183b7d4206e488cf279f261",
     };
   }
   return {
