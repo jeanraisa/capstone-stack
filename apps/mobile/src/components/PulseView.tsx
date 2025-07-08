@@ -1,3 +1,5 @@
+import * as AC from "@bacons/apple-colors";
+import React from "react";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -6,8 +8,6 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import * as AC from "@bacons/apple-colors";
-import React from "react";
 
 const easing = Easing.bezier(0.4, 0, 0.6, 1);
 const duration = 1000;
@@ -40,6 +40,6 @@ export function PulseView({ height = 100 }: { height?: number }) {
         },
         animatedStyles,
       ]}
-    ></Animated.View>
+    />
   );
 }

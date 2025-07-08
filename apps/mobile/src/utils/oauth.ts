@@ -1,11 +1,11 @@
 import { dataProviders } from "@capstone/utils/enum";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthRequest } from "expo-auth-session";
+import Constants from "expo-constants";
 import React from "react";
 import Config from "~/config";
 import { generateURI } from "./lib";
 import { trpc } from "./trpc";
-import Constants from "expo-constants";
 
 export function useWithingsAuth(path: string) {
   const [, , promptAsync] = useAuthRequest(

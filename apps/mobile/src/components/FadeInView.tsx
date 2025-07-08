@@ -1,4 +1,4 @@
-import { ViewProps } from "react-native";
+import type { ViewProps } from "react-native";
 import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 
 export function FadeInView({
