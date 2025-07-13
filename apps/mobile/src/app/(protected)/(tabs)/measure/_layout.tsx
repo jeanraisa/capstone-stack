@@ -1,10 +1,18 @@
 import { Stack } from "~/components/Stack";
+import { HeaderRightButton } from "~/components/StickyHeader";
+import { Outfit } from "~/constants/font";
 
 export default function MenuLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerTitleStyle: {
+          fontFamily: Outfit.regular,
+        },
+        headerBackTitleStyle: {
+          fontFamily: Outfit.regular,
+        },
+        headerRight: () => <HeaderRightButton />,
       }}
     >
       <Stack.Screen name="index" options={{ title: "Data Source" }} />

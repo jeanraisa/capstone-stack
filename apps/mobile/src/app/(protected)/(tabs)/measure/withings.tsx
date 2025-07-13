@@ -61,7 +61,6 @@ export default function () {
               style={{ width: 35, height: 35, borderRadius: 5 }}
             />
           </View>
-          <Footnote style={{ fontSize: 18 }}>Withings</Footnote>
         </View>
       </View>
 

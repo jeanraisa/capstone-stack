@@ -69,16 +69,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
             />
           </TouchableOpacity> */}
 
-          <Link href="/settings" asChild>
-            <TouchableOpacity activeOpacity={0.7}>
-              <IconSymbol
-                name="person.crop.circle.dashed"
-                size={28}
-                color={AC.link}
-                weight="thin"
-              />
-            </TouchableOpacity>
-          </Link>
+          <HeaderRightButton />
         </View>
       </View>
 
@@ -95,3 +86,18 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
     </View>
   );
 };
+
+export function HeaderRightButton() {
+  return (
+    <Link href="/settings" asChild>
+      <TouchableOpacity activeOpacity={0.7}>
+        <IconSymbol
+          name="person.crop.circle.dashed"
+          size={28}
+          color={AC.link}
+          weight="thin"
+        />
+      </TouchableOpacity>
+    </Link>
+  );
+}

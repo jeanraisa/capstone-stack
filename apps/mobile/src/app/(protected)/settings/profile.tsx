@@ -1,7 +1,7 @@
 import * as AC from "@bacons/apple-colors";
 import { toIsoUtcDate } from "@capstone/utils/date";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, subYears } from "date-fns";
 import React from "react";
 import {
@@ -23,7 +23,6 @@ export default function SettingsProfile() {
   const today = new Date();
   const yearsAgo = subYears(today, 18);
   const [showDate, setShowDate] = React.useState(false);
-  const [date, setDate] = React.useState(yearsAgo);
 
   const queryClient = useQueryClient();
 
@@ -35,14 +34,34 @@ export default function SettingsProfile() {
     }),
   );
 
-  const loading = updateMutation.isPending;
+  const userStatus = useQuery(trpc.user.status.queryOptions());
+  const [date, setDate] = React.useState<Date>(
+    userStatus.data?.dob ? new Date(userStatus.data.dob) : yearsAgo,
+  );
+
+  if (userStatus.isPending) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="small" />
+      </View>
+    );
+  }
+
+  if (userStatus.isError) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Footnote>Sorry an error as occured</Footnote>
+      </View>
+    );
+  }
+
+  const pending = updateMutation.isPending;
 
   return (
     <BodyScrollView
       contentContainerStyle={{
-        paddingTop: 30,
+        paddingTop: 50,
         paddingHorizontal: 16,
-        paddingBottom: 50,
         gap: 18,
       }}
     >
@@ -122,7 +141,7 @@ export default function SettingsProfile() {
 
         <Animated.View layout={LinearTransition.springify().damping(16)}>
           <TouchableOpacity
-            disabled={loading}
+            disabled={pending}
             style={{
               backgroundColor: AC.systemBlue,
               padding: 12,
@@ -138,7 +157,7 @@ export default function SettingsProfile() {
               });
             }}
           >
-            {loading ? (
+            {pending ? (
               <ActivityIndicator size="small" color="white" />
             ) : (
               <Footnote style={{ fontSize: 15, color: "white" }}>Save</Footnote>

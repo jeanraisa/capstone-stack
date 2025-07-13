@@ -23,11 +23,19 @@ export function useSession() {
   return query;
 }
 
-export function useSignInMutation() {
+export function useSignInMutation({
+  onError,
+}: {
+  onError: (error: string) => void;
+}) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: signInMutationKey,
-    onSuccess: async () => {
+    onSuccess: async ({ error }) => {
+      if (error) {
+        onError(error);
+        return;
+      }
       await queryClient.invalidateQueries({
         queryKey: trpc.user.status.queryKey(),
       });
@@ -46,20 +54,32 @@ export function useSignInMutation() {
       });
 
       if (error) {
-        throw new Error(error.message);
+        return {
+          error: error.message,
+        } as const;
       }
 
-      return data;
+      return {
+        data,
+      } as const;
     },
   });
   return mutation;
 }
 
-export function useSignUpMutation() {
+export function useSignUpMutation({
+  onError,
+}: {
+  onError: (error: string) => void;
+}) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: signUpMutationKey,
-    onSuccess: async () => {
+    onSuccess: async ({ error }) => {
+      if (error) {
+        onError(error);
+        return;
+      }
       await queryClient.invalidateQueries({
         queryKey: trpc.user.status.queryKey(),
       });
@@ -81,10 +101,14 @@ export function useSignUpMutation() {
       });
 
       if (error) {
-        throw new Error(error.message);
+        return {
+          error: error.message,
+        } as const;
       }
 
-      return data;
+      return {
+        data,
+      } as const;
     },
   });
   return mutation;

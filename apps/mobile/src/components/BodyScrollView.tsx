@@ -1,11 +1,14 @@
 import * as AC from "@bacons/apple-colors";
-import type { ScrollViewProps } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, {
+  type AnimatedScrollViewProps,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabOverflow } from "./Tabs";
 
 export function BodyScrollView(
-  props: ScrollViewProps & { ref?: React.RefObject<Animated.ScrollView> },
+  props: AnimatedScrollViewProps & {
+    ref?: React.RefObject<Animated.ScrollView>;
+  },
 ) {
   const paddingBottom = useBottomTabOverflow();
 

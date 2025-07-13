@@ -40,9 +40,8 @@ export default function OnboardingDob() {
   return (
     <BodyScrollView
       contentContainerStyle={{
-        paddingTop: 30,
+        paddingTop: 50,
         paddingHorizontal: 16,
-        paddingBottom: 50,
         gap: 18,
       }}
     >

@@ -105,7 +105,7 @@ export function LatestMeasurement() {
             paddingVertical: 12,
             paddingHorizontal: 12,
             flexDirection: "row",
-            alignItems: "center",
+            alignItems: "flex-start",
             gap: 6,
           }}
         >
@@ -296,7 +296,7 @@ const data = {
   1: {
     color: AC.opaqueSeparator,
     description:
-      "Some of your health metrics are slightly outside the normal range",
+      "Some of your health metrics are slightly outside the\nnormal range",
   },
   2: {
     color: AC.systemOrange,
@@ -305,7 +305,7 @@ const data = {
   0: {
     color: AC.systemGreen,
     description:
-      "Your current health indicators are within the expected range.",
+      "Your current health indicators are within the expected\nrange.",
   },
 } as const satisfies Record<
   PredictionClass,

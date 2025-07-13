@@ -1,18 +1,14 @@
 import { BodyScrollView } from "~/components/BodyScrollView";
 import { PastResults } from "~/components/PastResults";
-import { useBottomTabOverflow } from "~/components/Tabs";
 import { Headline } from "~/components/Title";
 import { TodayResults } from "~/components/TodaysResults";
 
 export default function ResultTab() {
-  const tabHeight = useBottomTabOverflow();
-
   return (
     <BodyScrollView
       contentContainerStyle={{
-        paddingTop: 30,
-        paddingHorizontal: 18,
-        paddingBottom: tabHeight,
+        paddingTop: 50,
+        paddingHorizontal: 16,
         gap: 18,
       }}
       showsVerticalScrollIndicator={false}

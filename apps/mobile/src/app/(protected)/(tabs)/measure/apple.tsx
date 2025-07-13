@@ -80,7 +80,6 @@ export default function AppleScreen() {
           >
             <IconSymbol size={32} name="apple.logo" color={AC.label} />
           </View>
-          <Footnote style={{ fontSize: 18 }}>Apple Health</Footnote>
         </View>
       </View>
 

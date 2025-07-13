@@ -22,16 +22,19 @@ export default function Measure() {
       contentContainerStyle={styles.scrollViewContent}
     >
       <FadeInView style={styles.container}>
-        <View style={{ marginHorizontal: "auto" }}>
+        <View
+          style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}
+        >
           <IconSymbol
             name="waveform.path.ecg.rectangle.fill"
             size={32}
             color={AC.systemBlue}
           />
+          <Footnote style={[styles.subtitle, { color: AC.label }]}>
+            {"Track your health with connected devices \n or manual input."}
+          </Footnote>
         </View>
-        <Footnote style={[styles.subtitle, { color: AC.label }]}>
-          {"Track your health with connected devices \n or manual input."}
-        </Footnote>
+
         {ADD_DATA.map((card) => {
           const { title, options: cards } = card;
           return (
@@ -75,9 +78,8 @@ export default function Measure() {
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    paddingTop: 20,
+    paddingTop: 50,
     paddingHorizontal: 16,
-    paddingBottom: 200,
   },
   container: {
     gap: 25,
@@ -86,7 +88,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     fontSize: 13,
-    opacity: 0.7,
   },
 });
 

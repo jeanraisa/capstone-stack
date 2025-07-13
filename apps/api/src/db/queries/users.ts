@@ -8,6 +8,7 @@ export async function getUserStatus(db: Database, options: { userId: string }) {
       columns: {
         onboarded: true,
         dob: true,
+        name: true,
       },
       where: (row, { eq }) => eq(row.id, options.userId),
     })

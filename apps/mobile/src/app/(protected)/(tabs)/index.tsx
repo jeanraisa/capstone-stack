@@ -1,6 +1,5 @@
 import type React from "react";
 import { BodyScrollView } from "~/components/BodyScrollView";
-import { useBottomTabOverflow } from "~/components/Tabs";
 import { HeartRateVital } from "~/components/vitals/HeartRate";
 
 import { LatestMeasurement } from "~/components/LatestResult";
@@ -10,13 +9,11 @@ import { BloodPressureVital } from "~/components/vitals/BloodPressure";
 import { BoodyTemperatureVital } from "~/components/vitals/BodyTemperature";
 
 const Home: React.FC = () => {
-  const tabHeight = useBottomTabOverflow();
   return (
     <BodyScrollView
       contentContainerStyle={{
-        paddingTop: 30,
-        paddingHorizontal: 18,
-        paddingBottom: tabHeight,
+        paddingTop: 50,
+        paddingHorizontal: 16,
         gap: 18,
       }}
       showsVerticalScrollIndicator={false}

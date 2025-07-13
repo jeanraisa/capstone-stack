@@ -1,27 +1,29 @@
-import { StickyHeader } from "~/components/StickyHeader";
+import { HeaderRightButton } from "~/components/StickyHeader";
 import { Tabs } from "~/components/Tabs";
 import { Outfit } from "~/constants/font";
-import { useSession } from "~/hooks/user";
 
 export default function TabsLayout() {
-  const session = useSession();
   return (
     <Tabs
       screenOptions={{
-        header: (props) => {
-          return <StickyHeader title={props.options.title ?? ""} />;
-        },
         tabBarLabelStyle: {
           fontFamily: Outfit.regular,
           fontSize: 11,
         },
+        headerTitleStyle: {
+          fontFamily: Outfit.regular,
+        },
+        headerRightContainerStyle: {
+          paddingRight: 16,
+        },
+        headerRight: () => <HeaderRightButton />,
         animation: "fade",
       }}
     >
       <Tabs.Screen
         name="index"
         systemImage="house"
-        options={{ title: session.data?.user.name, tabBarLabel: "Home" }}
+        options={{ title: "Home", tabBarLabel: "Home" }}
       />
       <Tabs.Screen
         name="result"
@@ -31,7 +33,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="measure"
         systemImage="waveform.path.ecg.rectangle.fill"
-        options={{ title: "Measure", tabBarLabel: "Measure" }}
+        options={{ headerShown: false, tabBarLabel: "Measure" }}
       />
     </Tabs>
   );

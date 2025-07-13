@@ -16,19 +16,17 @@ export default function ProtectedLayout() {
         },
       }}
     >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false, title: "" }} />
       <Stack.Screen
         name="settings/index"
         options={{
           title: "Settings",
-          headerBackTitle: "Back",
         }}
       />
       <Stack.Screen
         name="settings/profile"
         options={{
           title: "Profile",
-          headerBackTitle: "Back",
         }}
       />
     </Stack>

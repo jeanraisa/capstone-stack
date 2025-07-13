@@ -11,7 +11,11 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import Animated from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
 import * as Card from "~/components/Card";
 import { IconSymbol } from "~/components/IconSymbol";
 import { Caption, Footnote, Subheadline } from "~/components/Title";
@@ -21,6 +25,7 @@ import { useAddMetricMutation } from "~/hooks/metric";
 export default function HeartRate() {
   const [value, setValue] = React.useState<string>("");
   const [predict, setPredict] = React.useState<boolean>(true);
+  const [error, setError] = React.useState<string>("");
   const inputRef = React.useRef<TextInput | null>(null);
 
   const addMutation = useAddMetricMutation({
@@ -44,6 +49,8 @@ export default function HeartRate() {
         gap: 100,
       }}
       showsVerticalScrollIndicator={false}
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="always"
     >
       <View style={{ gap: 5, marginHorizontal: "auto", alignItems: "center" }}>
         <IconSymbol name="waveform.path" size={32} color={AC.systemPink} />
@@ -92,45 +99,89 @@ export default function HeartRate() {
           </Card.Content>
         </Card.Section>
 
-        <TouchableOpacity
-          disabled={loading}
-          style={styles.button}
-          activeOpacity={0.8}
-          onPress={() => {
-            const formattedValue = Number(Number.parseFloat(value).toFixed(1));
-            if (formattedValue < 21) return;
-
-            addMutation.mutate({
-              date: toIsoUtcDate(new Date()),
-              predict,
-              data: [
-                {
-                  type: metrics.HEART_RATE,
-                  value: formattedValue,
-                  unit: units.BPM,
-                },
-              ],
-            });
-          }}
-        >
-          {loading ? (
-            <ActivityIndicator size="small" color="white" />
-          ) : addMutation.isSuccess ? (
-            <IconSymbol
-              name="checkmark.circle.fill"
-              color="white"
-              animationSpec={{
-                effect: {
-                  type: "bounce",
-                },
-                repeating: true,
-                speed: 0.05,
-              }}
-            />
-          ) : (
-            <Footnote style={{ fontSize: 15, color: "white" }}>Save</Footnote>
+        <Animated.View layout={LinearTransition.springify().damping(16)}>
+          {error && (
+            <Animated.View
+              entering={FadeIn.springify().damping(16)}
+              exiting={FadeOut.springify().damping(16)}
+              style={{ marginBottom: 4, paddingLeft: 18 }}
+            >
+              <Footnote style={{ color: AC.systemRed }}>{error}</Footnote>
+            </Animated.View>
           )}
-        </TouchableOpacity>
+
+          {addMutation.isSuccess && (
+            <Animated.View
+              entering={FadeIn.springify().damping(16)}
+              exiting={FadeOut.springify().damping(16)}
+              style={{
+                flexDirection: "row",
+                gap: 6,
+                alignItems: "center",
+                marginBottom: 4,
+                paddingLeft: 18,
+              }}
+            >
+              <IconSymbol
+                name="checkmark.circle.fill"
+                color={AC.systemGreen}
+                animationSpec={{
+                  effect: {
+                    type: "bounce",
+                  },
+                  repeating: true,
+                  speed: 0.05,
+                }}
+                size={16}
+              />
+              <Footnote style={{ color: AC.systemGreen }}>
+                Heart Rate added successfully
+              </Footnote>
+            </Animated.View>
+          )}
+
+          <Animated.View layout={LinearTransition.springify().damping(16)}>
+            <TouchableOpacity
+              disabled={loading}
+              style={styles.button}
+              activeOpacity={0.8}
+              onPress={() => {
+                setError("");
+                const formattedValue = Number(
+                  Number.parseFloat(value).toFixed(1),
+                );
+                if (
+                  Number.isNaN(formattedValue) ||
+                  formattedValue < 30 ||
+                  formattedValue > 350
+                ) {
+                  setError("Heart must be between 30 and 350 BPM");
+                  return;
+                }
+
+                addMutation.mutate({
+                  date: toIsoUtcDate(new Date()),
+                  predict,
+                  data: [
+                    {
+                      type: metrics.HEART_RATE,
+                      value: formattedValue,
+                      unit: units.BPM,
+                    },
+                  ],
+                });
+              }}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Footnote style={{ fontSize: 15, color: "white" }}>
+                  Save
+                </Footnote>
+              )}
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
       </View>
     </KeyboardAwareScrollView>
   );

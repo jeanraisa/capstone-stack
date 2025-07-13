@@ -74,11 +74,10 @@ export default function Settings() {
 const styles = StyleSheet.create({
   scrollViewContent: {
     paddingHorizontal: 16,
-    paddingBottom: 200,
+    paddingTop: 50,
   },
   container: {
     gap: 25,
-    marginTop: 80,
   },
   subtitle: {
     alignSelf: "center",
