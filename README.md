@@ -89,4 +89,4 @@ The trained model consistently achieved accuracy scores between 70–75%, with s
 
 - Multi-language UI: Support Kinyarwanda, French, and other local languages.
 
-(Download the App)[https://testflight.apple.com/join/bD7WDzgf]
+[Download the App](https://testflight.apple.com/join/bD7WDzgf)
